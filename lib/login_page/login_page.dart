@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:iswara/constants.dart';
+import 'package:iswara/home_page/home_page.dart';
 import 'package:iswara/register_page/register_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import '../authentication_service.dart';
 
 class LoginPage extends StatelessWidget {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  static const routeName = "/loginPage";
   @override
   Widget build(BuildContext context) {
     double defaultScreenWidth = 400.0;
@@ -38,16 +45,18 @@ class LoginPage extends StatelessWidget {
   Widget _iconLogin() {
     return Column(
       children: <Widget>[
-        Padding(padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(120.0),)),
-    Image.asset(
-        "assets/images/iswara_logo.png",
-        width: ScreenUtil.instance.setHeight(250.0),
-        height: ScreenUtil.instance.setHeight(250.0),
+        Padding(
+            padding: EdgeInsets.only(
+          top: ScreenUtil.instance.setHeight(120.0),
+        )),
+        Image.asset(
+          "assets/images/iswara_logo.png",
+          width: ScreenUtil.instance.setHeight(250.0),
+          height: ScreenUtil.instance.setHeight(250.0),
         ),
       ],
     );
   }
-
 
   Widget _textField() {
     return Column(
@@ -56,10 +65,9 @@ class LoginPage extends StatelessWidget {
           padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(12.0)),
         ),
         TextFormField(
+          controller: emailController,
           maxLength: 20,
-
           decoration: InputDecoration(
-
             icon: Icon(Icons.account_circle_outlined),
             labelText: 'Username',
             labelStyle: TextStyle(
@@ -74,23 +82,22 @@ class LoginPage extends StatelessWidget {
           padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(12.0)),
         ),
         TextFormField(
+          controller: passwordController,
           maxLength: 20,
           decoration: const InputDecoration(
-              icon: Icon(Icons.vpn_key_outlined),
-              labelText: 'Password',
-              labelStyle: TextStyle(
-                color: ColorPalette.primaryTextColor,
-              ),
-
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: ColorPalette.primaryTextColor),
-              ),
-
+            icon: Icon(Icons.vpn_key_outlined),
+            labelText: 'Password',
+            labelStyle: TextStyle(
+              color: ColorPalette.primaryTextColor,
             ),
-                style: TextStyle(color: ColorPalette.primaryTextColor),
-                obscureText: true,
-                autofocus: false,
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: ColorPalette.primaryTextColor),
+            ),
           ),
+          style: TextStyle(color: ColorPalette.primaryTextColor),
+          obscureText: true,
+          autofocus: false,
+        ),
       ],
     );
   }
@@ -100,16 +107,23 @@ class LoginPage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(16.0), right: ScreenUtil.instance.setHeight(16.0),),
+          padding: EdgeInsets.only(
+            top: ScreenUtil.instance.setHeight(16.0),
+            right: ScreenUtil.instance.setHeight(16.0),
+          ),
         ),
         InkWell(
           child: Container(
-            padding: EdgeInsets.symmetric(vertical: ScreenUtil.instance.setHeight(8.0),),
+            padding: EdgeInsets.symmetric(
+              vertical: ScreenUtil.instance.setHeight(8.0),
+            ),
             width: ScreenUtil.instance.setHeight(100.0),
             child: Text(
               'Login',
-              style: TextStyle(color: ColorPalette.primaryTextColor,
-              fontSize: ScreenUtil.instance.setHeight(20.0),),
+              style: TextStyle(
+                color: ColorPalette.primaryTextColor,
+                fontSize: ScreenUtil.instance.setHeight(20.0),
+              ),
               textAlign: TextAlign.center,
             ),
             decoration: BoxDecoration(
@@ -119,7 +133,10 @@ class LoginPage extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(16.0), left: ScreenUtil.instance.setHeight(16.0),),
+          padding: EdgeInsets.only(
+            top: ScreenUtil.instance.setHeight(16.0),
+            left: ScreenUtil.instance.setHeight(16.0),
+          ),
         ),
         Text(
           'or',
@@ -131,11 +148,14 @@ class LoginPage extends StatelessWidget {
         FlatButton(
           child: Text(
             'Register',
-            style: TextStyle(color: ColorPalette.primaryTextColor
-            , fontSize: ScreenUtil.instance.setHeight(20.0),),
+            style: TextStyle(
+              color: ColorPalette.primaryTextColor,
+              fontSize: ScreenUtil.instance.setHeight(20.0),
+            ),
           ),
           onPressed: () {
-            Navigator.pushNamed(context, RegisterPage.routeName);
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => RegisterPage()));
           },
         ),
       ],
@@ -146,25 +166,35 @@ class LoginPage extends StatelessWidget {
     return Column(
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(16.0),),
-        ),
-        InkWell(
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 8.0),
-            width: double.infinity,
-            height: ScreenUtil.instance.setHeight(40.0),
-            child: Text(
-              'Go!',
-              style: TextStyle(color: ColorPalette.primaryTextColor,
-              fontSize: ScreenUtil.instance.setHeight(20.0),),
-              textAlign: TextAlign.center,
-            ),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(30.0),
-            ),
+          padding: EdgeInsets.only(
+            top: ScreenUtil.instance.setHeight(16.0),
           ),
         ),
+        RaisedButton(
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 8.0),
+              width: double.infinity,
+              height: ScreenUtil.instance.setHeight(40.0),
+              child: Text(
+                'Go!',
+                style: TextStyle(
+                  color: ColorPalette.primaryTextColor,
+                  fontSize: ScreenUtil.instance.setHeight(20.0),
+                ),
+                textAlign: TextAlign.center,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+            ),
+            onPressed: () {
+              context.read<AuthenticationService>().signIn(
+                    context,
+                    email: emailController.text.trim(),
+                    password: passwordController.text.trim(),
+                  );
+            }),
       ],
     );
   }

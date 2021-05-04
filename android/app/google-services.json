@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "130235967131",
+    "project_id": "iswara-1c992",
+    "storage_bucket": "iswara-1c992.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:130235967131:android:675dd5f885aeea6413883e",
+        "android_client_info": {
+          "package_name": "com.iswara.iswara"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "130235967131-eu4cs30hlgr82uifi9pm2ocea8ucvg54.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdRlcaPguwrxn3eT2YOP6LVhY_BZFR66I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "130235967131-eu4cs30hlgr82uifi9pm2ocea8ucvg54.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
