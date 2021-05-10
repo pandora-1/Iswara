@@ -66,10 +66,10 @@ class LoginPage extends StatelessWidget {
         ),
         TextFormField(
           controller: emailController,
-          maxLength: 20,
+          maxLength: 30,
           decoration: InputDecoration(
             icon: Icon(Icons.account_circle_outlined),
-            labelText: 'Username',
+            labelText: 'Email',
             labelStyle: TextStyle(
               color: ColorPalette.primaryTextColor,
             ),
@@ -194,6 +194,8 @@ class LoginPage extends StatelessWidget {
                     email: emailController.text.trim(),
                     password: passwordController.text.trim(),
                   );
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => HomePage()));
             }),
       ],
     );
