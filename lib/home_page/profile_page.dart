@@ -12,7 +12,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePage extends State<ProfilePage> {
   File _image;
   final picker = ImagePicker();
-
+  int _counter = 0;
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
 
@@ -44,14 +44,16 @@ class _ProfilePage extends State<ProfilePage> {
               child: Column(
                 children: <Widget>[
                   _appBarsTopHomePage(),
-                  Center(
+                  /* Center(
                     child: _image == null ? Text('No image selected.') : Image.file(_image),
                   ),
                   FloatingActionButton(
                     onPressed: getImage,
                     tooltip: 'Pick Image',
                     child: Icon(Icons.add_a_photo),
-                  ),
+                  ), */
+                  _contentProfilePage(),
+
                 ],
               ),
             ),
@@ -62,6 +64,57 @@ class _ProfilePage extends State<ProfilePage> {
   }
 
 
+  Widget _contentProfilePage() {
+    return Column(
+      children: <Widget>[
+        Padding(padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(15.0))),
+        CircleAvatar(
+          backgroundColor: ColorPalette.primaryTextColor,
+          radius: 48.0,
+
+        ),
+        Column(
+          children: [
+            Text(
+              "NAME",
+              style: TextStyle(
+                color: ColorPalette.primaryTextColor,
+                fontSize: ScreenUtil.instance.setHeight(20.0),
+              ),
+            ),
+            Text(
+              "$_counter",
+              style: TextStyle(
+                color: ColorPalette.primaryTextColor,
+                fontSize: ScreenUtil.instance.setHeight(20.0),
+              ),
+            ),
+            Text(
+              "Writings",
+              style: TextStyle(
+                color: ColorPalette.primaryTextColor,
+                fontSize: ScreenUtil.instance.setHeight(20.0),
+              ),
+            ),
+          ],
+        ),
+        Padding(padding: EdgeInsets.symmetric(vertical: ScreenUtil.instance.setHeight(60.0))),
+        Center(
+          child: Text(
+            "WRITINGS",
+            style: TextStyle(
+              color: ColorPalette.primaryTextColor,
+              fontSize: ScreenUtil.instance.setHeight(30.0),
+            ),
+          ),
+        ),
+        FloatingActionButton(
+          backgroundColor: Colors.white,
+          child: Icon(Icons.add, color: ColorPalette.primaryTextColor,),
+        )
+      ],
+    );
+  }
 
   Widget _appBarsTopHomePage() {
     return Column(

@@ -8,7 +8,7 @@ import 'package:iswara/constants.dart';
 class FollowPage extends StatelessWidget {
   static const routeName = "/homepage";
   var items = [
-    ReusableComponent(title: "Makanan Sehat Lezat Berfizi tinggi", author: "ichael", description: "lorem ipsum ", image: "./iswara_logo.png", linkToArticle: "./1"),
+    ReusableComponent(title: "Makanan Sehat Lezat Bergizi tinggi", author: "ichael", description: "lorem ipsum ", image: "./iswara_logo.png", linkToArticle: "./1"),
     ReusableComponent(title: "Makanan Sehat", author: "Micho", description: "a", image: "./iswara_logo.png", linkToArticle: "./1"),
     ReusableComponent(title: "Makanan ", author: "Mici", description: "b", image: "./iswara_logo.png", linkToArticle: "./1")
   ];
@@ -44,22 +44,25 @@ class FollowPage extends StatelessWidget {
                           color: ColorPalette.primaryColor,
                           elevation: 10,
                           child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
-                              Padding(padding: EdgeInsets.only(left: 0.0)),
+                              Padding(padding: EdgeInsets.only(left: 10.0)),
                                Expanded(
                                    flex: 6,
                                    child: Column(
-                                       mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                       crossAxisAlignment: CrossAxisAlignment.start,
                                          children: <Widget>[
-                                           Padding(padding: EdgeInsets.only(top: 30.0)),
+                                           Padding(padding: EdgeInsets.only(top: 20.0)),
                                            Text(
                                                "${items[index].title}",
+                                               textAlign: TextAlign.left,
                                                style: TextStyle(fontSize: ScreenUtil.instance.setWidth(20.0))
                                            ),
                                            Text(
                                                "${items[index].author}",
+                                               textAlign: TextAlign.left,
                                                style: TextStyle(fontSize: ScreenUtil.instance.setWidth(15.0))
                                            ),
                                            Padding(padding: EdgeInsets.only(top: ScreenUtil.instance.setWidth(20.0))),
@@ -67,27 +70,56 @@ class FollowPage extends StatelessWidget {
                                                "${items[index].description}",
                                                style: TextStyle(fontSize: ScreenUtil.instance.setWidth(15.0))
                                            ),
-                                           ButtonBar(
-                                             children: <Widget>[
-                                               RaisedButton(
-                                                 child: Text('Read More'),
-                                                 onPressed: () {/* ... */},
-                                               ),
-                                             ],
-                                           )
+                                           Align(
+                                             alignment: Alignment.bottomLeft,
+                                              child: RaisedButton(
+                                                color: ColorPalette.primaryTextColor,
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      new MaterialPageRoute());
+                                                },
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(18.0),
+                                                    side: BorderSide(color: Colors.transparent)
+                                                ),
+                                                child: Text(
+                                                  "Read More",
+                                                  style: new TextStyle(color: Colors.white),
+                                                ),
+                                              ),
+                                           ),
+
                                          ]
                                )),
 
                               Padding(padding: EdgeInsets.only(right: ScreenUtil.instance.setWidth(15.0))),
                               Expanded(
                                   flex: 6,
-                                  child: SizedBox(
-                                height: ScreenUtil.instance.setWidth(180.0),
-                                width: ScreenUtil.instance.setWidth(180.0), // fixed width and height
-                                child: Image.asset("assets/images/iswara_logo.png", fit: BoxFit.cover,),
-                              )),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      SizedBox(
+                                        height: ScreenUtil.instance.setWidth(160.0),
+                                        width: ScreenUtil.instance.setWidth(180.0), // fixed width and height
+                                        child: Image.asset("assets/images/iswara_logo.png", fit: BoxFit.cover,),
+                                      ),
+                                      Padding(padding: EdgeInsets.only(bottom: 1.0),),
+                                      Row(
+                                        children: [
+                                          Padding(padding: EdgeInsets.only(left: 115.0)),
+                                          Icon(
+                                            Icons.archive_outlined,
+                                            size: 30.0,
+                                            color: ColorPalette.primaryTextColor,
+                                          ),
+                                        ],
+                                      )
+                                    ]
+                                  )
+                              ),
 
-                              Padding(padding: EdgeInsets.only(left: ScreenUtil.instance.setWidth(5.0))),
+                              Padding(padding: EdgeInsets.only(right: ScreenUtil.instance.setWidth(20.0))),
                             ],
                           ),
                         ),
