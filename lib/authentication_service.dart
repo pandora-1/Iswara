@@ -3,6 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'home_page/home_page.dart';
 import 'login_page/login_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class CrudMethods {
+  Future<void> addData(blogData) async {
+    FirebaseFirestore.instance
+        .collection("blogs")
+        .add(blogData)
+        .catchError((e) {
+      print(e);
+    });
+  }
+
+  getData() async {
+    return FirebaseFirestore.instance.collection("blogs").get();
+  }
+}
 
 class AuthenticationService {
   final FirebaseAuth _firebaseAuth;
@@ -15,6 +31,10 @@ class AuthenticationService {
     await _firebaseAuth.signOut();
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => LoginPage()));
+  }
+
+  String getUid() {
+    return _firebaseAuth.currentUser.uid;
   }
 
   Future<String> signIn(BuildContext context,
@@ -31,29 +51,19 @@ class AuthenticationService {
   }
 
   Future<String> signUp(BuildContext context,
-      {String email, String password}) async {
+      {String name, String email, String password}) async {
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => HomePage()));
+      DocumentReference ref = FirebaseFirestore.instance
+          .collection("users")
+          .doc(_firebaseAuth.currentUser.uid);
+      ref.set({'name': name, 'profileUrl': null});
       return "Signed up";
     } on FirebaseAuthException catch (e) {
       return e.message;
     }
-  }
-}
-
-class AuthenticationGo extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final firebaseUser = context.watch<User>();
-
-    if (firebaseUser != null) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomePage()));
-    }
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => LoginPage()));
   }
 }

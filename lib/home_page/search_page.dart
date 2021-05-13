@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iswara/constants.dart';
 import 'package:flappy_search_bar/flappy_search_bar.dart';
 
-
 class Post {
   final String title;
   final String description;
@@ -34,7 +33,6 @@ class SearchPage extends StatelessWidget {
               return ListTile(
                 title: Text(post.title),
                 subtitle: Text(post.description),
-                
               );
             },
           ),

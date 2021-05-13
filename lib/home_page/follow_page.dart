@@ -1,17 +1,32 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:iswara/home_page/home_page.dart';
+import 'package:iswara/authentication_service.dart';
 import 'package:iswara/constants.dart';
 
+class FollowPage extends StatefulWidget {
+  @override
+  _FollowPage createState() => _FollowPage();
+}
 
+class _FollowPage extends State<FollowPage> {
+  CrudMethods crudMethods = new CrudMethods();
 
-class FollowPage extends StatelessWidget {
+  QuerySnapshot blogSnapshot;
+
+  @override
+  void initState() {
+    super.initState();
+
+    crudMethods.getData().then((result) {
+      blogSnapshot = result;
+      setState(() {});
+    });
+  }
+
   static const routeName = "/homepage";
-  var items = [
-    ReusableComponent(title: "Makanan Sehat Lezat Bergizi tinggi", author: "ichael", description: "lorem ipsum ", image: "./iswara_logo.png", linkToArticle: "./1"),
-    ReusableComponent(title: "Makanan Sehat", author: "Micho", description: "a", image: "./iswara_logo.png", linkToArticle: "./1"),
-    ReusableComponent(title: "Makanan ", author: "Mici", description: "b", image: "./iswara_logo.png", linkToArticle: "./1")
-  ];
   @override
   Widget build(BuildContext context) {
     double defaultScreenWidth = 400.0;
@@ -22,136 +37,175 @@ class FollowPage extends StatelessWidget {
       allowFontScaling: true,
     )..init(context);
     return Scaffold(
-      appBar:  PreferredSize(
+      appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: _appBarsTopHomePage(),
       ),
       body: Container(
         color: ColorPalette.primaryColor,
-        child: ListView.builder(
-          itemCount: items.length,
-            itemBuilder: (context, index) {
-                return  Column(
+        child: blogSnapshot != null
+            ? ListView.builder(
+                itemCount: blogSnapshot.docs.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Column(
                     children: <Widget>[
                       Container(
                         width: ScreenUtil.instance.setHeight(450.0),
                         height: ScreenUtil.instance.setHeight(250.0),
                         padding: new EdgeInsets.all(10.0),
                         child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                          color: ColorPalette.primaryColor,
-                          elevation: 10,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: <Widget>[
-                              Padding(padding: EdgeInsets.only(left: 10.0)),
-                               Expanded(
-                                   flex: 6,
-                                   child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                       crossAxisAlignment: CrossAxisAlignment.start,
-                                         children: <Widget>[
-                                           Padding(padding: EdgeInsets.only(top: 20.0)),
-                                           Text(
-                                               "${items[index].title}",
-                                               textAlign: TextAlign.left,
-                                               style: TextStyle(fontSize: ScreenUtil.instance.setWidth(20.0))
-                                           ),
-                                           Text(
-                                               "${items[index].author}",
-                                               textAlign: TextAlign.left,
-                                               style: TextStyle(fontSize: ScreenUtil.instance.setWidth(15.0))
-                                           ),
-                                           Padding(padding: EdgeInsets.only(top: ScreenUtil.instance.setWidth(20.0))),
-                                           Text(
-                                               "${items[index].description}",
-                                               style: TextStyle(fontSize: ScreenUtil.instance.setWidth(15.0))
-                                           ),
-                                           Align(
-                                             alignment: Alignment.bottomLeft,
-                                              child: RaisedButton(
-                                                color: ColorPalette.primaryTextColor,
-                                                onPressed: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      new MaterialPageRoute());
-                                                },
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(18.0),
-                                                    side: BorderSide(color: Colors.transparent)
-                                                ),
-                                                child: Text(
-                                                  "Read More",
-                                                  style: new TextStyle(color: Colors.white),
-                                                ),
-                                              ),
-                                           ),
-
-                                         ]
-                               )),
-
-                              Padding(padding: EdgeInsets.only(right: ScreenUtil.instance.setWidth(15.0))),
-                              Expanded(
-                                  flex: 6,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      SizedBox(
-                                        height: ScreenUtil.instance.setWidth(160.0),
-                                        width: ScreenUtil.instance.setWidth(180.0), // fixed width and height
-                                        child: Image.asset("assets/images/iswara_logo.png", fit: BoxFit.cover,),
-                                      ),
-                                      Padding(padding: EdgeInsets.only(bottom: 1.0),),
-                                      Row(
-                                        children: [
-                                          Padding(padding: EdgeInsets.only(left: 115.0)),
-                                          Icon(
-                                            Icons.archive_outlined,
-                                            size: 30.0,
-                                            color: ColorPalette.primaryTextColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            color: ColorPalette.primaryColor,
+                            elevation: 10,
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: <Widget>[
+                                    Padding(
+                                        padding: EdgeInsets.only(left: 10.0)),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                  blogSnapshot.docs[index]
+                                                      .data()['title'],
+                                                  textAlign: TextAlign.left,
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    fontSize: ScreenUtil
+                                                        .instance
+                                                        .setWidth(20.0),
+                                                  )),
+                                              Text(
+                                                  blogSnapshot.docs[index]
+                                                      ['authorName'],
+                                                  textAlign: TextAlign.left,
+                                                  style: TextStyle(
+                                                      fontSize: ScreenUtil
+                                                          .instance
+                                                          .setWidth(15.0))),
+                                              Padding(
+                                                  padding: EdgeInsets.only(
+                                                      top: ScreenUtil.instance
+                                                          .setWidth(10.0),
+                                                      bottom: 0.0)),
+                                              Text(
+                                                  blogSnapshot.docs[index]
+                                                      ['desc'],
+                                                  textAlign: TextAlign.left,
+                                                  maxLines: 4,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                      fontSize: ScreenUtil
+                                                          .instance
+                                                          .setWidth(15.0))),
+                                            ])),
+                                    Padding(
+                                        padding: EdgeInsets.only(
+                                            right: ScreenUtil.instance
+                                                .setWidth(15.0))),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Column(children: <Widget>[
+                                          SizedBox(
+                                            height: ScreenUtil.instance
+                                                .setWidth(161.0),
+                                            width: ScreenUtil.instance.setWidth(
+                                                161.0), // fixed width and height
+                                            child: Image.network(
+                                              blogSnapshot.docs[index]
+                                                  ['imgUrl'],
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
-                                        ],
-                                      )
-                                    ]
-                                  )
-                              ),
-
-                              Padding(padding: EdgeInsets.only(right: ScreenUtil.instance.setWidth(20.0))),
-                            ],
-                          ),
-                        ),
+                                        ])),
+                                    Padding(
+                                        padding: EdgeInsets.only(
+                                            right: ScreenUtil.instance
+                                                .setWidth(20.0))),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Padding(
+                                        padding: EdgeInsets.only(left: 5.0)),
+                                    Container(
+                                      alignment: Alignment.bottomLeft,
+                                      child: RaisedButton(
+                                        color: ColorPalette.primaryTextColor,
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context, new MaterialPageRoute());
+                                        },
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(18.0),
+                                            side: BorderSide(
+                                                color: Colors.transparent)),
+                                        child: Text(
+                                          "Read More",
+                                          style: new TextStyle(
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                        padding: EdgeInsets.only(left: 190.0)),
+                                    Icon(
+                                      Icons.star_border,
+                                      size: 40.0,
+                                      color: ColorPalette.primaryTextColor,
+                                    ),
+                                  ],
+                                )
+                              ],
+                            )),
                       )
                     ],
                   );
-
-            },
-        ),
+                },
+              )
+            : Container(
+                alignment: Alignment.center,
+                child: CircularProgressIndicator(),
+              ),
       ),
     );
   }
 
   Widget _appBarsTopHomePage() {
-
     return Column(
       children: <Widget>[
         AppBar(
           leading: Icon(Icons.menu),
-          title: Text('DEKAP',
+          title: Text(
+            'DEKAP',
             style: TextStyle(
               color: ColorPalette.primaryTextColor,
-            ),),
+            ),
+          ),
           actions: [
             Icon(Icons.star_border_purple500_outlined),
-            Padding(padding: EdgeInsets.symmetric(horizontal: ScreenUtil.instance.setHeight(4.0))),
+            Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: ScreenUtil.instance.setHeight(4.0))),
             /* Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: Icon(Icons.search),
             ), */
             Icon(Icons.chat_outlined),
-            Padding(padding: EdgeInsets.symmetric(horizontal: ScreenUtil.instance.setHeight(4.0))),
+            Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: ScreenUtil.instance.setHeight(4.0))),
           ],
           backgroundColor: ColorPalette.primaryColor,
           iconTheme: IconThemeData(
@@ -164,44 +218,43 @@ class FollowPage extends StatelessWidget {
   }
 
   Widget _contentcard(data, index) {
-      return Card(
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          children: [
-            ListTile(
-              leading: Icon(Icons.arrow_drop_down_circle),
-              title: Text( data[index].title ),
-              subtitle: Text(
-                data[index].author,
-                style: TextStyle(color: Colors.black.withOpacity(0.6)),
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        children: [
+          ListTile(
+            leading: Icon(Icons.arrow_drop_down_circle),
+            title: Text(data[index].title),
+            subtitle: Text(
+              data[index].author,
+              style: TextStyle(color: Colors.black.withOpacity(0.6)),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              data[index].description,
+              style: TextStyle(color: Colors.black.withOpacity(0.6)),
+            ),
+          ),
+          ButtonBar(
+            alignment: MainAxisAlignment.start,
+            children: [
+              FlatButton(
+                textColor: const Color(0xFF6200EE),
+                onPressed: () {
+                  // Perform some action
+                },
+                child: const Text('ACTION 1'),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                data[index].description,
-                style: TextStyle(color: Colors.black.withOpacity(0.6)),
-              ),
-            ),
-            ButtonBar(
-              alignment: MainAxisAlignment.start,
-              children: [
-                FlatButton(
-                  textColor: const Color(0xFF6200EE),
-                  onPressed: () {
-                    // Perform some action
-                  },
-                  child: const Text('ACTION 1'),
-                ),
-              ],
-            ),
-            Image.asset('assets/card-sample-image.jpg'),
-            Image.asset('assets/card-sample-image-2.jpg'),
-          ],
-        ),
-      );
-    }
-
+            ],
+          ),
+          Image.asset('assets/card-sample-image.jpg'),
+          Image.asset('assets/card-sample-image-2.jpg'),
+        ],
+      ),
+    );
+  }
 
   Widget _navbarBottom() {
     return Column(
@@ -216,7 +269,6 @@ class FollowPage extends StatelessWidget {
           onTap: (value) {
             // Respond to item press.
           },
-
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_sharp),
@@ -235,7 +287,6 @@ class FollowPage extends StatelessWidget {
       ],
     );
   }
-
 }
 
 class ReusableComponent {
@@ -252,5 +303,4 @@ class ReusableComponent {
     @required this.image,
     @required this.linkToArticle,
   });
-
 }

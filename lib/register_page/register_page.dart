@@ -12,6 +12,7 @@ import '../login_page/login_page.dart';
 class RegisterPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
 
   static const routeName = "/registerPage";
   @override
@@ -68,6 +69,7 @@ class RegisterPage extends StatelessWidget {
           padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(12.0)),
         ),
         TextFormField(
+          controller: nameController,
           maxLength: 20,
           decoration: InputDecoration(
             icon: Icon(Icons.account_circle_outlined),
@@ -207,11 +209,10 @@ class RegisterPage extends StatelessWidget {
             onPressed: () {
               context.read<AuthenticationService>().signUp(
                     context,
+                    name: nameController.text.trim(),
                     email: emailController.text.trim(),
                     password: passwordController.text.trim(),
                   );
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => HomePage()));
             })
       ],
     );
