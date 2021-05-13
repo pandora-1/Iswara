@@ -12,7 +12,9 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePage extends State<ProfilePage> {
   File _image;
   final picker = ImagePicker();
-  int _counter = 0;
+
+  int _counter = 0; /* Untuk menghitung jumlah tulisan yang sudah ditulis */
+
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
 
@@ -74,13 +76,38 @@ class _ProfilePage extends State<ProfilePage> {
 
         ),
         Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              "NAME",
-              style: TextStyle(
-                color: ColorPalette.primaryTextColor,
-                fontSize: ScreenUtil.instance.setHeight(20.0),
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "NAME",
+                  style: TextStyle(
+                    color: ColorPalette.primaryTextColor,
+                    fontSize: ScreenUtil.instance.setHeight(20.0),
+                  ),
+                ),
+                PopupMenuButton(
+                  icon: Icon(Icons.more_vert),
+                  color: ColorPalette.primaryColor,
+                  itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                    const PopupMenuItem(
+                      child: ListTile(
+                        leading: Icon(Icons.drive_file_rename_outline),
+                        title: Text('Name'),
+                      ),
+                    ),
+                    const PopupMenuItem(
+                      child: ListTile(
+                        leading: Icon(Icons.camera_enhance_rounded),
+                        title: Text('Profile Picture'),
+
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
             Text(
               "$_counter",

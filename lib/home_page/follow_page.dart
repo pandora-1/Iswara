@@ -8,9 +8,9 @@ import 'package:iswara/constants.dart';
 class FollowPage extends StatelessWidget {
   static const routeName = "/homepage";
   var items = [
-    ReusableComponent(title: "Makanan Sehat Lezat Bergizi tinggi", author: "ichael", description: "lorem ipsum ", image: "./iswara_logo.png", linkToArticle: "./1"),
-    ReusableComponent(title: "Makanan Sehat", author: "Micho", description: "a", image: "./iswara_logo.png", linkToArticle: "./1"),
-    ReusableComponent(title: "Makanan ", author: "Mici", description: "b", image: "./iswara_logo.png", linkToArticle: "./1")
+    ReusableComponent(title: "Jakarta, Kota Paling Rentan Bahaya Lingkungan di Dunia", author: "Safir Makki", description: "Jakarta, CNN Indonesia -- DKI Jakarta menduduki peringkat teratas daftar kota paling rentan bahaya lingkungan di dunia. Menurut sebuah penilaian atau indeks iklim risiko yang diterbitkan Jumat (7/5), Jakarta berisiko tenggelam.", image: "./iswara_logo.png", linkToArticle: "./1"),
+    ReusableComponent(title: "Lebaran 2021, Asa dalam Mangkuk Mi dan Terminal Mati", author: "Feybien Ramayanti", description: "Jakarta, CNN Indonesia -- Sepasang mata pria hampir paruh baya di hadapan saya memandang lurus ke ruang lowong di depannya. Hamparan lengang itu lebih mirip lapangan sonder rumput ketimbang terminal.Lobang pada lahan lapang beraspal itu jadi kelihatan karena tak lagi tertutup badan kendaraan. Tak satupun bus terparkir di sana. Apalagi penumpang. Tidak pula orang-orang dengan gembolan kardus-kardus atau tas gendong. Lalu lalang agen perjalanan pun tak ada.", image: "./iswara_logo.png", linkToArticle: "./1"),
+    ReusableComponent(title: "Cara Menandai Lokasi di Google Maps untuk Tambah Alamat", author: "Adhi Wicaksono", description: "Jakarta, CNN Indonesia -- Keberadaan teknologi kian hari berguna untuk memudahkan hidup manusia. Salah satunya dengan fitur Maps pada Google Maps atau peta digital yang diakses menggunakan ponsel smartphone.", image: "./iswara_logo.png", linkToArticle: "./1")
   ];
   @override
   Widget build(BuildContext context) {
@@ -43,85 +43,94 @@ class FollowPage extends StatelessWidget {
                           ),
                           color: ColorPalette.primaryColor,
                           elevation: 10,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: <Widget>[
-                              Padding(padding: EdgeInsets.only(left: 10.0)),
-                               Expanded(
-                                   flex: 6,
-                                   child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                       crossAxisAlignment: CrossAxisAlignment.start,
-                                         children: <Widget>[
-                                           Padding(padding: EdgeInsets.only(top: 20.0)),
-                                           Text(
-                                               "${items[index].title}",
-                                               textAlign: TextAlign.left,
-                                               style: TextStyle(fontSize: ScreenUtil.instance.setWidth(20.0))
-                                           ),
-                                           Text(
-                                               "${items[index].author}",
-                                               textAlign: TextAlign.left,
-                                               style: TextStyle(fontSize: ScreenUtil.instance.setWidth(15.0))
-                                           ),
-                                           Padding(padding: EdgeInsets.only(top: ScreenUtil.instance.setWidth(20.0))),
-                                           Text(
-                                               "${items[index].description}",
-                                               style: TextStyle(fontSize: ScreenUtil.instance.setWidth(15.0))
-                                           ),
-                                           Align(
-                                             alignment: Alignment.bottomLeft,
-                                              child: RaisedButton(
-                                                color: ColorPalette.primaryTextColor,
-                                                onPressed: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      new MaterialPageRoute());
-                                                },
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(18.0),
-                                                    side: BorderSide(color: Colors.transparent)
-                                                ),
-                                                child: Text(
-                                                  "Read More",
-                                                  style: new TextStyle(color: Colors.white),
-                                                ),
-                                              ),
-                                           ),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: <Widget>[
+                                  Padding(padding: EdgeInsets.only(left: 10.0)),
+                                  Expanded(
+                                      flex: 6,
+                                      child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text(
+                                                "${items[index].title}",
+                                                textAlign: TextAlign.left,
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                    fontSize: ScreenUtil.instance.setWidth(20.0),
+                                                )
+                                            ),
+                                            Text(
+                                                "${items[index].author}",
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(fontSize: ScreenUtil.instance.setWidth(15.0))
+                                            ),
+                                            Padding(padding: EdgeInsets.only(top: ScreenUtil.instance.setWidth(10.0), bottom: 0.0)),
+                                            Text(
+                                                "${items[index].description}",
+                                                textAlign: TextAlign.left,
+                                                maxLines: 4,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(fontSize: ScreenUtil.instance.setWidth(15.0))
+                                            ),
 
-                                         ]
-                               )),
 
-                              Padding(padding: EdgeInsets.only(right: ScreenUtil.instance.setWidth(15.0))),
-                              Expanded(
-                                  flex: 6,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      SizedBox(
-                                        height: ScreenUtil.instance.setWidth(160.0),
-                                        width: ScreenUtil.instance.setWidth(180.0), // fixed width and height
-                                        child: Image.asset("assets/images/iswara_logo.png", fit: BoxFit.cover,),
-                                      ),
-                                      Padding(padding: EdgeInsets.only(bottom: 1.0),),
-                                      Row(
-                                        children: [
-                                          Padding(padding: EdgeInsets.only(left: 115.0)),
-                                          Icon(
-                                            Icons.archive_outlined,
-                                            size: 30.0,
-                                            color: ColorPalette.primaryTextColor,
-                                          ),
-                                        ],
+                                          ]
+                                      )),
+
+                                  Padding(padding: EdgeInsets.only(right: ScreenUtil.instance.setWidth(15.0))),
+                                  Expanded(
+                                      flex: 6,
+                                      child: Column(
+
+                                          children: <Widget>[
+
+                                            SizedBox(
+                                              height: ScreenUtil.instance.setWidth(161.0),
+                                              width: ScreenUtil.instance.setWidth(161.0), // fixed width and height
+                                              child: Image.asset("assets/images/iswara_logo.png", fit: BoxFit.cover,),
+                                            ),
+                                          ]
                                       )
-                                    ]
-                                  )
-                              ),
+                                  ),
 
-                              Padding(padding: EdgeInsets.only(right: ScreenUtil.instance.setWidth(20.0))),
+                                  Padding(padding: EdgeInsets.only(right: ScreenUtil.instance.setWidth(20.0))),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Padding(padding: EdgeInsets.only(left: 5.0)),
+                                  Container(
+                                    alignment: Alignment.bottomLeft,
+                                    child: RaisedButton(
+                                      color: ColorPalette.primaryTextColor,
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            new MaterialPageRoute());
+                                      },
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(18.0),
+                                          side: BorderSide(color: Colors.transparent)
+                                      ),
+                                      child: Text(
+                                        "Read More",
+                                        style: new TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(padding: EdgeInsets.only(left: 190.0)),
+                                  Icon(
+                                    Icons.star_border,
+                                    size: 40.0,
+                                    color: ColorPalette.primaryTextColor,
+                                  ),
+                                ],
+                              )
                             ],
-                          ),
+                          )
                         ),
                       )
                     ],
