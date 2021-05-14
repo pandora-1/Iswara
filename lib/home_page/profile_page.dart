@@ -120,10 +120,6 @@ class _ProfilePage extends State<ProfilePage> {
                       child: ListTile(
                         leading: Icon(Icons.camera_enhance_rounded),
                         title: Text('Profile Picture'),
-                      ),
-                    ),
-                  ],
-                ),
               ],
             ),
             Text(
