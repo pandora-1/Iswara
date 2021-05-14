@@ -120,47 +120,51 @@ class _ProfilePage extends State<ProfilePage> {
                       child: ListTile(
                         leading: Icon(Icons.camera_enhance_rounded),
                         title: Text('Profile Picture'),
+                      ),
+                    )
+                  ],
+                ),
+                Text(
+                  "$_counter",
+                  style: TextStyle(
+                    color: ColorPalette.primaryTextColor,
+                    fontSize: ScreenUtil.instance.setHeight(20.0),
+                  ),
+                ),
+                Text(
+                  "Writings",
+                  style: TextStyle(
+                    color: ColorPalette.primaryTextColor,
+                    fontSize: ScreenUtil.instance.setHeight(20.0),
+                  ),
+                ),
               ],
             ),
-            Text(
-              "$_counter",
-              style: TextStyle(
-                color: ColorPalette.primaryTextColor,
-                fontSize: ScreenUtil.instance.setHeight(20.0),
+            Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: ScreenUtil.instance.setHeight(60.0))),
+            Center(
+              child: Text(
+                "WRITINGS",
+                style: TextStyle(
+                  color: ColorPalette.primaryTextColor,
+                  fontSize: ScreenUtil.instance.setHeight(30.0),
+                ),
               ),
             ),
-            Text(
-              "Writings",
-              style: TextStyle(
+            FloatingActionButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AddPage()));
+              },
+              backgroundColor: Colors.white,
+              child: Icon(
+                Icons.add,
                 color: ColorPalette.primaryTextColor,
-                fontSize: ScreenUtil.instance.setHeight(20.0),
               ),
             ),
           ],
         ),
-        Padding(
-            padding: EdgeInsets.symmetric(
-                vertical: ScreenUtil.instance.setHeight(60.0))),
-        Center(
-          child: Text(
-            "WRITINGS",
-            style: TextStyle(
-              color: ColorPalette.primaryTextColor,
-              fontSize: ScreenUtil.instance.setHeight(30.0),
-            ),
-          ),
-        ),
-        FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => AddPage()));
-          },
-          backgroundColor: Colors.white,
-          child: Icon(
-            Icons.add,
-            color: ColorPalette.primaryTextColor,
-          ),
-        )
       ],
     );
   }
