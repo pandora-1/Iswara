@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iswara/constants.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:iswara/home_page/add_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:iswara/home_page/home_page.dart';
 import 'package:provider/provider.dart';
+import 'package:random_string/random_string.dart';
 import '../authentication_service.dart';
 import 'dart:io';
 
@@ -249,6 +252,72 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePage extends State<ProfilePage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
+  String uid_string;
+  bool _isLoading = false;
+
+  void getUid() {
+    final User user = auth.currentUser;
+    final uid = user.uid;
+    uid_string = uid;
+    // here you write the codes to input the data into firestore
+  }
+
+  String authorName, title, desc, username;
+
+  File _image;
+  CrudMethods crudMethods = new CrudMethods();
+
+  Future getImage() async {
+    var pickedFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = pickedFile;
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  updateProfileName() async {
+    getUid();
+    DocumentReference ref =
+        FirebaseFirestore.instance.collection("users").doc(uid_string);
+    ref.set({'name': username, 'profileUrl': null});
+  }
+
+  uploadData() async {
+    if (_image != null) {
+      setState(() {
+        _isLoading = true;
+      });
+      getUid();
+      String downloadUrl;
+      FirebaseStorage storage = FirebaseStorage.instance;
+      Reference ref = storage
+          .ref()
+          .child("img")
+          .child("$uid_string${randomAlphaNumeric(9)}.jpg");
+
+      UploadTask task = ref.putFile(_image);
+      await task.then((res) async {
+        downloadUrl = await res.ref.getDownloadURL();
+      });
+      print("this is url $downloadUrl");
+      authorName = snapshot.data()['name'];
+
+      Map<String, String> blogMap = {
+        "imgUrl": downloadUrl,
+        "authorName": authorName,
+        "title": title,
+        "desc": desc
+      };
+      crudMethods.addData(blogMap).then((result) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => HomePage()));
+      });
+    } else {}
+  }
 
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   DocumentSnapshot snapshot;
@@ -263,23 +332,11 @@ class _ProfilePage extends State<ProfilePage> {
     });
   }
 
-  File _image;
   final picker = ImagePicker();
 
   int _counter = 0; /* Untuk menghitung jumlah tulisan yang sudah ditulis */
   var _name = "NAME";
   var _nameTemp = "";
-  Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
-
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      } else {
-        print('No image selected.');
-      }
-    });
-  }
 
   static const routeName = "/homepage";
 
@@ -393,6 +450,9 @@ class _ProfilePage extends State<ProfilePage> {
                               child: Column(
                                 children: [
                                   TextFormField(
+                                    onChanged: (val) {
+                                      title = val;
+                                    },
                                     decoration: InputDecoration(
                                       labelText: 'Title',
                                       labelStyle: TextStyle(
@@ -403,6 +463,9 @@ class _ProfilePage extends State<ProfilePage> {
                                   ),
                                   Padding(padding: EdgeInsets.only(top: 15.0)),
                                   TextFormField(
+                                    onChanged: (val) {
+                                      desc = val;
+                                    },
                                     keyboardType: TextInputType.multiline,
                                     maxLines: null,
                                     decoration: InputDecoration(
@@ -415,21 +478,26 @@ class _ProfilePage extends State<ProfilePage> {
                                   ),
                                   Padding(padding: EdgeInsets.only(top: 15.0)),
                                   TextButton(
-                                      child: Text("Post Story".toUpperCase(),
-                                          style: TextStyle(fontSize: 14)),
-                                      style: ButtonStyle(
-                                          padding: MaterialStateProperty.all<
-                                              EdgeInsets>(EdgeInsets.all(15)),
-                                          foregroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  Colors.red),
-                                          shape: MaterialStateProperty.all<
-                                                  RoundedRectangleBorder>(
-                                              RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(18.0),
-                                                  side: BorderSide(color: ColorPalette.primaryTextColor)))),
-                                      onPressed: () => null),
+                                    child: Text("Post Story".toUpperCase(),
+                                        style: TextStyle(fontSize: 14)),
+                                    style: ButtonStyle(
+                                        padding:
+                                            MaterialStateProperty.all<EdgeInsets>(
+                                                EdgeInsets.all(15)),
+                                        foregroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Colors.red),
+                                        shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(18.0),
+                                                side: BorderSide(
+                                                    color: ColorPalette.primaryTextColor)))),
+                                    onPressed: () {
+                                      uploadData();
+                                    },
+                                  ),
                                 ],
                               ));
                         },
@@ -479,9 +547,7 @@ class _ProfilePage extends State<ProfilePage> {
                               child: new TextField(
                                 autofocus: true,
                                 onChanged: (text) {
-                                  setState(() {
-                                    _nameTemp = text;
-                                  });
+                                  username = text;
                                 },
                                 style: TextStyle(
                                   color: Colors.black,
@@ -503,9 +569,13 @@ class _ProfilePage extends State<ProfilePage> {
                           new FlatButton(
                               child: const Text('Change'),
                               onPressed: () {
-                                Navigator.pop(context);
                                 setState(() {
-                                  _name = _nameTemp;
+                                  Navigator.pop(context);
+                                  updateProfileName();
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => HomePage()));
                                 });
                               })
                         ],
