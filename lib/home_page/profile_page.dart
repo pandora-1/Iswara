@@ -5,6 +5,8 @@ import 'package:iswara/constants.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:iswara/home_page/add_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import '../authentication_service.dart';
 import 'dart:io';
 
 /* class ProfilePage extends StatefulWidget {
@@ -246,6 +248,21 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePage extends State<ProfilePage> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
+  DocumentSnapshot snapshot;
+
+  @override
+  void initState() {
+    super.initState();
+
+    users.doc(auth.currentUser.uid).get().then((result) {
+      snapshot = result;
+      setState(() {});
+    });
+  }
+
   File _image;
   final picker = ImagePicker();
 
@@ -263,6 +280,7 @@ class _ProfilePage extends State<ProfilePage> {
       }
     });
   }
+
   static const routeName = "/homepage";
 
   @override
@@ -282,7 +300,7 @@ class _ProfilePage extends State<ProfilePage> {
             Center(
               child: Column(
                 children: <Widget>[
-                  _appBarsTopHomePage(),
+                  _appBarsTopHomePage(context),
                   /* Center(
                     child: _image == null ? Text('No image selected.') : Image.file(_image),
                   ),
@@ -292,7 +310,6 @@ class _ProfilePage extends State<ProfilePage> {
                     child: Icon(Icons.add_a_photo),
                   ), */
                   _contentProfilePage(),
-
                 ],
               ),
             ),
@@ -302,21 +319,20 @@ class _ProfilePage extends State<ProfilePage> {
     );
   }
 
-
   Widget _contentProfilePage() {
     return Column(
       children: <Widget>[
-        Padding(padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(15.0))),
+        Padding(
+            padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(15.0))),
         CircleAvatar(
           backgroundColor: ColorPalette.primaryTextColor,
           radius: 48.0,
-
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "$_name",
+              snapshot != null ? snapshot.data()['name'] : "@Username",
               style: TextStyle(
                 color: ColorPalette.primaryTextColor,
                 fontSize: ScreenUtil.instance.setHeight(20.0),
@@ -338,7 +354,9 @@ class _ProfilePage extends State<ProfilePage> {
             ),
           ],
         ),
-        Padding(padding: EdgeInsets.symmetric(vertical: ScreenUtil.instance.setHeight(60.0))),
+        Padding(
+            padding: EdgeInsets.symmetric(
+                vertical: ScreenUtil.instance.setHeight(60.0))),
         Center(
           child: Text(
             "WRITINGS",
@@ -350,95 +368,95 @@ class _ProfilePage extends State<ProfilePage> {
         ),
         FloatingActionButton(
           backgroundColor: Colors.white,
-          child: Icon(Icons.add, color: ColorPalette.primaryTextColor,),
+          child: Icon(
+            Icons.add,
+            color: ColorPalette.primaryTextColor,
+          ),
           onPressed: () {
             showDialog(
                 context: context,
                 builder: (_) => new AlertDialog(
-                  shape: RoundedRectangleBorder(
-                      borderRadius:
-                      BorderRadius.all(
-                          Radius.circular(10.0))),
-                  content: Builder(
-                    builder: (context) {
-                      // Get available height and width of the build area of this widget. Make a choice depending on the size.
-                      var height = MediaQuery.of(context).size.height;
-                      var width = MediaQuery.of(context).size.width;
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(10.0))),
+                      content: Builder(
+                        builder: (context) {
+                          // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                          var height = MediaQuery.of(context).size.height;
+                          var width = MediaQuery.of(context).size.width;
 
-                      return Container(
-                          height: height,
-                          width: width,
-
-                          padding: EdgeInsets.all(5.0),
-                          margin: EdgeInsets.all(0),
-                          child: Column(
-                            children: [
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  labelText: 'Title',
-                                  labelStyle: TextStyle(
-                                    color: ColorPalette.primaryTextColor,
+                          return Container(
+                              height: height,
+                              width: width,
+                              padding: EdgeInsets.all(5.0),
+                              margin: EdgeInsets.all(0),
+                              child: Column(
+                                children: [
+                                  TextFormField(
+                                    decoration: InputDecoration(
+                                      labelText: 'Title',
+                                      labelStyle: TextStyle(
+                                        color: ColorPalette.primaryTextColor,
+                                      ),
+                                      border: OutlineInputBorder(),
+                                    ),
                                   ),
-                                  border: OutlineInputBorder(),
-
-                                ),
-                              ),
-                              Padding(padding: EdgeInsets.only(top: 15.0)),
-                              TextFormField(
-                                keyboardType: TextInputType.multiline,
-                                maxLines: null,
-                                decoration: InputDecoration(
-                                  labelText: 'Story',
-                                  labelStyle: TextStyle(
-                                    color: ColorPalette.primaryTextColor,
+                                  Padding(padding: EdgeInsets.only(top: 15.0)),
+                                  TextFormField(
+                                    keyboardType: TextInputType.multiline,
+                                    maxLines: null,
+                                    decoration: InputDecoration(
+                                      labelText: 'Story',
+                                      labelStyle: TextStyle(
+                                        color: ColorPalette.primaryTextColor,
+                                      ),
+                                      border: OutlineInputBorder(),
+                                    ),
                                   ),
-                                  border: OutlineInputBorder(),
-                                ),
-                              ),
-                              Padding(padding: EdgeInsets.only(top: 15.0)),
-                              TextButton(
-                                  child: Text(
-                                      "Post Story".toUpperCase(),
-                                      style: TextStyle(fontSize: 14)
-                                  ),
-                                  style: ButtonStyle(
-                                      padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(15)),
-                                      foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
-                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(18.0),
-                                              side: BorderSide(color: ColorPalette.primaryTextColor)
-                                          )
-                                      )
-                                  ),
-                                  onPressed: () => null
-                              ),
-                            ],
-                          )
-
-                      );
-                    },
-                  ),
-                )
-            );
+                                  Padding(padding: EdgeInsets.only(top: 15.0)),
+                                  TextButton(
+                                      child: Text("Post Story".toUpperCase(),
+                                          style: TextStyle(fontSize: 14)),
+                                      style: ButtonStyle(
+                                          padding: MaterialStateProperty.all<
+                                              EdgeInsets>(EdgeInsets.all(15)),
+                                          foregroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.red),
+                                          shape: MaterialStateProperty.all<
+                                                  RoundedRectangleBorder>(
+                                              RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(18.0),
+                                                  side: BorderSide(color: ColorPalette.primaryTextColor)))),
+                                      onPressed: () => null),
+                                ],
+                              ));
+                        },
+                      ),
+                    ));
           },
         )
       ],
     );
   }
 
-  Widget _appBarsTopHomePage() {
+  Widget _appBarsTopHomePage(BuildContext context) {
     return Column(
       children: <Widget>[
         AppBar(
           leading: new Container(),
-          title: Text('@Username',
+          title: Text(
+            snapshot != null ? snapshot.data()['name'] : "@Username",
             style: TextStyle(
               color: ColorPalette.primaryTextColor,
-            ),),
+            ),
+          ),
           actions: [
             Icon(Icons.notifications_active_outlined),
-            Padding(padding: EdgeInsets.symmetric(horizontal: ScreenUtil.instance.setHeight(2.0))),
+            Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: ScreenUtil.instance.setHeight(2.0))),
             /* Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: Icon(Icons.search),
@@ -470,7 +488,8 @@ class _ProfilePage extends State<ProfilePage> {
                                   decorationColor: Colors.white,
                                 ),
                                 decoration: new InputDecoration(
-                                    labelText: 'New Name', hintText: "Input your name here"),
+                                    labelText: 'New Name',
+                                    hintText: "Input your name here"),
                               ),
                             )
                           ],
@@ -523,10 +542,19 @@ class _ProfilePage extends State<ProfilePage> {
                 PopupMenuItem(child: Text('Help')),
                 PopupMenuItem(child: Text('About')),
                 PopupMenuItem(child: Text('Preferences')),
-                PopupMenuItem(child: Text('Log Out')),
+                PopupMenuItem(
+                  child: ListTile(
+                    title: Text('Log Out'),
+                    onTap: () {
+                      context.read<AuthenticationService>().signOut(context);
+                    },
+                  ),
+                ),
               ],
             ),
-            Padding(padding: EdgeInsets.symmetric(horizontal: ScreenUtil.instance.setHeight(2.0))),
+            Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: ScreenUtil.instance.setHeight(2.0))),
           ],
           backgroundColor: ColorPalette.primaryColor,
           iconTheme: IconThemeData(
@@ -537,8 +565,6 @@ class _ProfilePage extends State<ProfilePage> {
       ],
     );
   }
-
-
 
   Widget _navbarBottom() {
     return Column(
@@ -553,7 +579,6 @@ class _ProfilePage extends State<ProfilePage> {
           onTap: (value) {
             // Respond to item press.
           },
-
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_sharp),
