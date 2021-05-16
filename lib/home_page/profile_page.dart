@@ -497,79 +497,83 @@ class _ProfilePage extends State<ProfilePage> {
                               width: width,
                               padding: EdgeInsets.all(5.0),
                               margin: EdgeInsets.all(0),
-                              child: Column(
-                                children: [
-                                  Image.asset(
-                                    // Panduan jika user mengupload foto, ukurannya 180 x 180
-                                    'assets/images/iswara_logo.png',
-                                    width: ScreenUtil.instance.setWidth(180.0),
-                                    height:
+                              child: SingleChildScrollView(
+                                  scrollDirection: Axis.vertical,
+                                  child: Column(
+                                    children: [
+                                      Image.asset(
+                                        // Panduan jika user mengupload foto, ukurannya 180 x 180
+                                        'assets/images/iswara_logo.png',
+                                        width: ScreenUtil.instance.setWidth(180.0),
+                                        height:
                                         ScreenUtil.instance.setHeight(180.0),
-                                  ),
-                                  FlatButton(
-                                    child: Icon(
-                                      Icons.camera_alt,
-                                      color: Colors.redAccent,
-                                    ),
-                                    onPressed: () {
-                                      getImage();
-                                    }, // action if button pressed
-                                    color: Colors.white,
-                                  ),
-                                  TextFormField(
-                                    onChanged: (val) {
-                                      title = val;
-                                    },
-                                    decoration: InputDecoration(
-                                      labelText: 'Title',
-                                      labelStyle: TextStyle(
-                                        color: ColorPalette.primaryTextColor,
                                       ),
-                                      border: OutlineInputBorder(),
-                                    ),
-                                  ),
-                                  Padding(
-                                      padding: EdgeInsets.only(
-                                          top: ScreenUtil.instance
-                                              .setHeight(15.0))),
-                                  TextFormField(
-                                    onChanged: (val) {
-                                      desc = val;
-                                    },
-                                    keyboardType: TextInputType.multiline,
-                                    maxLines: null,
-                                    decoration: InputDecoration(
-                                      labelText: 'Story',
-                                      labelStyle: TextStyle(
-                                        color: ColorPalette.primaryTextColor,
+                                      FlatButton(
+                                        child: Icon(
+                                          Icons.camera_alt,
+                                          color: Colors.redAccent,
+                                        ),
+                                        onPressed: () {
+                                          getImage();
+                                        }, // action if button pressed
+                                        color: Colors.white,
                                       ),
-                                      border: OutlineInputBorder(),
-                                    ),
-                                  ),
-                                  Padding(padding: EdgeInsets.only(top: 15.0)),
-                                  TextButton(
-                                    child: Text("Post Story".toUpperCase(),
-                                        style: TextStyle(fontSize: 14)),
-                                    style: ButtonStyle(
-                                        padding:
+                                      TextFormField(
+                                        onChanged: (val) {
+                                          title = val;
+                                        },
+                                        decoration: InputDecoration(
+                                          labelText: 'Title',
+                                          labelStyle: TextStyle(
+                                            color: ColorPalette.primaryTextColor,
+                                          ),
+                                          border: OutlineInputBorder(),
+                                        ),
+                                      ),
+                                      Padding(
+                                          padding: EdgeInsets.only(
+                                              top: ScreenUtil.instance
+                                                  .setHeight(15.0))),
+                                      TextFormField(
+                                        onChanged: (val) {
+                                          desc = val;
+                                        },
+                                        keyboardType: TextInputType.multiline,
+                                        maxLines: null,
+                                        decoration: InputDecoration(
+                                          labelText: 'Story',
+                                          labelStyle: TextStyle(
+                                            color: ColorPalette.primaryTextColor,
+                                          ),
+                                          border: OutlineInputBorder(),
+                                        ),
+                                      ),
+                                      Padding(padding: EdgeInsets.only(top: 15.0)),
+                                      TextButton(
+                                        child: Text("Post Story".toUpperCase(),
+                                            style: TextStyle(fontSize: 14)),
+                                        style: ButtonStyle(
+                                            padding:
                                             MaterialStateProperty.all<EdgeInsets>(
                                                 EdgeInsets.all(15)),
-                                        foregroundColor:
+                                            foregroundColor:
                                             MaterialStateProperty.all<Color>(
                                                 Colors.red),
-                                        shape: MaterialStateProperty.all<
+                                            shape: MaterialStateProperty.all<
                                                 RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                                borderRadius:
+                                                RoundedRectangleBorder(
+                                                    borderRadius:
                                                     BorderRadius.circular(18.0),
-                                                side: BorderSide(
-                                                    color: ColorPalette.primaryTextColor)))),
-                                    onPressed: () {
-                                      uploadData();
-                                    },
-                                  ),
-                                ],
-                              ));
+                                                    side: BorderSide(
+                                                        color: ColorPalette.primaryTextColor)))),
+                                        onPressed: () {
+                                          uploadData();
+                                        },
+                                      ),
+                                    ],
+                                  )
+                              )
+                              );
                         },
                       ),
                     ));

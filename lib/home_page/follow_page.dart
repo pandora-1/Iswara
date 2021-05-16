@@ -349,6 +349,42 @@ class _FollowPage extends State<FollowPage> {
         preferredSize: const Size.fromHeight(60),
         child: _appBarsTopHomePage(),
       ),
+      drawer: Drawer(
+        child: Container(
+          color: ColorPalette.primaryColor,
+          child: ListView(
+            children: <Widget>[
+              Padding(padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(100.0))),
+              ListTile(
+                title: Text("DEKAP",
+                  style: TextStyle(
+                      color: ColorPalette.primaryTextColor,
+                    fontSize: ScreenUtil.instance.setWidth(25.0),
+                  ),
+                  ),
+              ),
+              ListTile(
+                title: Text(
+                  "DENGARKAN",
+                  style: TextStyle(
+                      color: ColorPalette.primaryTextColor,
+                      fontSize: ScreenUtil.instance.setWidth(25.0)
+                  ),),
+
+              ),
+              ListTile(
+                title: Text(
+                  "DAMPINGI",
+                  style: TextStyle(
+                      color: ColorPalette.primaryTextColor,
+                      fontSize: ScreenUtil.instance.setWidth(25.0),
+                  ),),
+
+              ),
+            ],
+          ),
+        )
+      ),
       body: Container(
         color: ColorPalette.primaryColor,
         child: blogSnapshot != null
@@ -494,7 +530,10 @@ class _FollowPage extends State<FollowPage> {
     return Column(
       children: <Widget>[
         AppBar(
-          leading: Icon(Icons.menu),
+
+          /* leading: IconButton(
+              icon: Icon(Icons.menu),
+           ), */
           title: Text(
             'DEKAP',
             style: TextStyle(
@@ -612,3 +651,4 @@ class ReusableComponent {
     @required this.linkToArticle,
   });
 }
+
