@@ -136,7 +136,7 @@ class RegisterPage extends StatelessWidget {
           ),
           onPressed: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomePage()));
+                context, MaterialPageRoute(builder: (context) => LoginPage()));
           },
         ),
         Padding(

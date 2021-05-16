@@ -90,6 +90,9 @@ class AuthenticationService {
       if (e.code == 'email-already-in-use') {
         _showDialog1(context);
       }
+      if (e.code == 'weak-password') {
+        _showDialog4(context);
+      }
     }
   }
 }
@@ -151,6 +154,31 @@ Future<void> _showDialog3(BuildContext context) {
       return AlertDialog(
         title: Text('Alert'),
         content: const Text('Wrong email or password'),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Ok'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LoginPage(),
+                ),
+              );
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+Future<void> _showDialog4(BuildContext context) {
+  return showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Alert'),
+        content: const Text('Password is too weak'),
         actions: <Widget>[
           FlatButton(
             child: Text('Ok'),

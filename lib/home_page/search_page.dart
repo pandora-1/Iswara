@@ -9,7 +9,8 @@ import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'dart:core';
 
 // data dummy untuk list, disini aku pakai list
-List<ListWords> listWords = [
+List<ListWords> listWords =
+    [] /*= [
   ListWords(
       'Makanan Lezat',
       'Michael',
@@ -28,7 +29,8 @@ List<ListWords> listWords = [
       'deskripsi adalah pemaparan atau penggambaran dengan kata-kata secara jelas dan terperinci. ',
       'assets/images/iswara_logo.png',
       '3'),
-];
+]*/
+    ;
 
 // urutannya ada title, author, desc, image, sama id list
 class ListWords {
@@ -78,11 +80,11 @@ class SearchPage extends StatefulWidget {
   _SearchPage createState() => _SearchPage();
 }
 
-CrudMethods crudMethods = new CrudMethods();
-
-QuerySnapshot blogSnapshot;
-
 class _SearchPage extends State<SearchPage> {
+  CrudMethods crudMethods = new CrudMethods();
+
+  QuerySnapshot blogSnapshot;
+
   @override
   void initState() {
     super.initState();
@@ -110,6 +112,12 @@ class _SearchPage extends State<SearchPage> {
               icon: Icon(Icons.search),
               color: ColorPalette.primaryTextColor,
               onPressed: () {
+                blogSnapshot != null
+                    ? blogSnapshot.docs.forEach((el) {
+                        listWords.add(ListWords(el['title'], el['authorName'],
+                            el['desc'], el['imgUrl'], '1'));
+                      })
+                    : print("ok");
                 showSearch(context: context, delegate: DataSearch(listWords));
               })
         ],
@@ -189,8 +197,8 @@ class DataSearch extends SearchDelegate<String> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
-                                      blogSnapshot.docs[index]
-                                          .data()['title'], // Untuk judul
+                                      suggestionList[index]
+                                          .titlelist, // Untuk judul
                                       textAlign: TextAlign.left,
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
@@ -199,8 +207,8 @@ class DataSearch extends SearchDelegate<String> {
                                             ScreenUtil.instance.setWidth(20.0),
                                       )),
                                   Text(
-                                      blogSnapshot.docs[index]
-                                          .data()['authorName'], // untuk author
+                                      listWords[index]
+                                          .authorlist, // untuk author
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                           fontSize: ScreenUtil.instance
@@ -210,7 +218,7 @@ class DataSearch extends SearchDelegate<String> {
                                           top: ScreenUtil.instance
                                               .setWidth(10.0),
                                           bottom: 0.0)),
-                                  Text(blogSnapshot.docs[index].data()['desc'],
+                                  Text(listWords[index].descriptionlist,
                                       textAlign: TextAlign.left,
                                       maxLines: 4,
                                       overflow: TextOverflow.ellipsis,
@@ -229,7 +237,7 @@ class DataSearch extends SearchDelegate<String> {
                                 width: ScreenUtil.instance
                                     .setWidth(140.0), // fixed width and height
                                 child: Image.network(
-                                  blogSnapshot.docs[index].data()['imgUrl'],
+                                  listWords[index].imagelist,
                                   fit: BoxFit.cover,
                                 ),
                               ),
