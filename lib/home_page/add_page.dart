@@ -5,8 +5,10 @@ import 'package:iswara/authentication_service.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:iswara/constants.dart';
 import 'package:random_string/random_string.dart';
 import 'package:iswara/home_page/home_page.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AddPage extends StatefulWidget {
   @override
@@ -85,6 +87,13 @@ class _AddPageState extends State<AddPage> {
 
   @override
   Widget build(BuildContext context) {
+    double defaultScreenWidth = 400.0;
+    double defaultScreenHeight = 810.0;
+    ScreenUtil.instance = ScreenUtil(
+      width: defaultScreenWidth,
+      height: defaultScreenHeight,
+      allowFontScaling: true,
+    )..init(context);
     return Scaffold(
         appBar: AppBar(
           title: Row(
@@ -92,15 +101,16 @@ class _AddPageState extends State<AddPage> {
             children: <Widget>[
               Text(
                 "Upload",
-                style: TextStyle(fontSize: 22),
+                style: TextStyle(fontSize: 22,
+                color: ColorPalette.primaryTextColor),
               ),
               Text(
-                "Data",
-                style: TextStyle(fontSize: 22, color: Colors.blue),
+                " Story ",
+                style: TextStyle(fontSize: 22, color: ColorPalette.primaryTextColor),
               )
             ],
           ),
-          backgroundColor: Colors.black,
+          backgroundColor: ColorPalette.primaryColor,
           elevation: 0.0,
           actions: <Widget>[
             GestureDetector(
@@ -108,18 +118,20 @@ class _AddPageState extends State<AddPage> {
                 uploadData();
               },
               child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Icon(Icons.file_upload)),
+                  padding: EdgeInsets.symmetric(horizontal: ScreenUtil.instance.setWidth(16.0)),
+                  child: Icon(Icons.file_upload), color: ColorPalette.primaryTextColor,),
             )
           ],
         ),
-        body: _isLoading
-            ? Container(
-                child: CircularProgressIndicator(),
-                alignment: Alignment.center,
-              )
-            : Container(
-                child: Column(
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: _isLoading
+              ? Container(
+            child: CircularProgressIndicator(),
+            alignment: Alignment.center,
+          )
+              : Container(
+              child: Column(
                 children: <Widget>[
                   SizedBox(
                     height: 10,
@@ -130,53 +142,75 @@ class _AddPageState extends State<AddPage> {
                     },
                     child: _image != null
                         ? Container(
-                            margin: EdgeInsets.symmetric(horizontal: 16),
-                            height: 150,
-                            width: MediaQuery.of(context).size.width,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(6),
-                              child: Image.file(
-                                _image,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          )
+                      margin: EdgeInsets.symmetric(horizontal: 16),
+                      height: ScreenUtil.instance.setHeight(190.0),
+                      // width: MediaQuery.of(context).size.width,
+                      width: ScreenUtil.instance.setHeight(190.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(6),
+                        child: Image.file(
+                          _image,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    )
                         : Container(
-                            margin: EdgeInsets.symmetric(horizontal: 16),
-                            height: 150,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(6)),
-                            width: MediaQuery.of(context).size.width,
-                            child: Icon(
-                              Icons.add_a_photo,
-                              color: Colors.black45,
-                            ),
-                          ),
+                      margin: EdgeInsets.symmetric(horizontal: ScreenUtil.instance.setWidth(16.0)),
+                      height: 150,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(6)),
+                      width: MediaQuery.of(context).size.width,
+                      child: Icon(
+                        Icons.add_a_photo,
+                        color: Colors.black45,
+                      ),
+                    ),
                   ),
                   SizedBox(
-                    height: 8,
+                    height: ScreenUtil.instance.setHeight(8.0),
                   ),
+
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
                       children: <Widget>[
-                        TextField(
-                          decoration: InputDecoration(hintText: "Title"),
+                        TextFormField(
                           onChanged: (val) {
                             title = val;
                           },
+                          decoration: InputDecoration(
+                            labelText: 'Title',
+                            labelStyle: TextStyle(
+                              color: ColorPalette.primaryTextColor,
+                            ),
+                            border: OutlineInputBorder(),
+                          ),
                         ),
-                        TextField(
-                          decoration: InputDecoration(hintText: "Description"),
+                        Padding(
+                            padding: EdgeInsets.only(
+                                top: ScreenUtil.instance.setHeight(15.0))),
+                        TextFormField(
                           onChanged: (val) {
                             desc = val;
                           },
-                        )
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          decoration: InputDecoration(
+                            labelText: 'Story',
+                            labelStyle: TextStyle(
+                              color: ColorPalette.primaryTextColor,
+                            ),
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
                       ],
                     ),
                   )
                 ],
-              )));
+              )),
+        )
+
+        );
   }
 }

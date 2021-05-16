@@ -220,7 +220,7 @@ class DataSearch extends SearchDelegate<String> {
                                           bottom: 0.0)),
                                   Text(listWords[index].descriptionlist,
                                       textAlign: TextAlign.left,
-                                      maxLines: 4,
+                                      maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                           fontSize: ScreenUtil.instance
@@ -358,7 +358,7 @@ class DataSearch extends SearchDelegate<String> {
                                           bottom: 0.0)),
                                   Text(listWords[index].descriptionlist,
                                       textAlign: TextAlign.left,
-                                      maxLines: 4,
+                                      maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                           fontSize: ScreenUtil.instance
