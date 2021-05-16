@@ -69,7 +69,7 @@ class LoginPage extends StatelessWidget {
           maxLength: 20,
           decoration: InputDecoration(
             icon: Icon(Icons.account_circle_outlined),
-            labelText: 'Username',
+            labelText: 'E-mail',
             labelStyle: TextStyle(
               color: ColorPalette.primaryTextColor,
             ),
@@ -171,7 +171,7 @@ class LoginPage extends StatelessWidget {
           ),
         ),
         RaisedButton(
-          color: Colors.white,
+            color: Colors.white,
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 8.0),
               width: double.infinity,

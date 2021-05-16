@@ -264,7 +264,7 @@ class _ProfilePage extends State<ProfilePage> {
 
   String authorName, title, desc, username;
 
-  File _image;
+  File _image, _profileImage;
   CrudMethods crudMethods = new CrudMethods();
 
   Future getImage() async {
@@ -277,6 +277,32 @@ class _ProfilePage extends State<ProfilePage> {
         print('No image selected.');
       }
     });
+  }
+
+  Future getProfileImage() async {
+    var pickedFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _profileImage = pickedFile;
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  uploadProfilePicture() async {
+    String _downloadUrl;
+    FirebaseStorage storage = FirebaseStorage.instance;
+    Reference _ref = storage.ref().child("img").child("$uid_string.jpg");
+    UploadTask task = _ref.putFile(_profileImage);
+    await task.then((res) async {
+      _downloadUrl = await res.ref.getDownloadURL();
+    });
+    getUid();
+    DocumentReference ref =
+        FirebaseFirestore.instance.collection("users").doc(uid_string);
+    ref.set({'name': snapshot.data()['name'], 'profileUrl': _downloadUrl});
   }
 
   updateProfileName() async {
@@ -307,6 +333,7 @@ class _ProfilePage extends State<ProfilePage> {
       authorName = snapshot.data()['name'];
 
       Map<String, String> blogMap = {
+        "uid": uid_string,
         "imgUrl": downloadUrl,
         "authorName": authorName,
         "title": title,
@@ -321,6 +348,7 @@ class _ProfilePage extends State<ProfilePage> {
 
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   DocumentSnapshot snapshot;
+  QuerySnapshot blogSnapshot;
 
   @override
   void initState() {
@@ -330,11 +358,16 @@ class _ProfilePage extends State<ProfilePage> {
       snapshot = result;
       setState(() {});
     });
+
+    crudMethods.getDataProfile().then((result) {
+      blogSnapshot = result;
+      setState(() {});
+    });
   }
 
   final picker = ImagePicker();
 
-  int _counter = 0; /* Untuk menghitung jumlah tulisan yang sudah ditulis */
+  /* Untuk menghitung jumlah tulisan yang sudah ditulis */
   var _name = "NAME";
   var _nameTemp = "";
 
@@ -381,10 +414,27 @@ class _ProfilePage extends State<ProfilePage> {
       children: <Widget>[
         Padding(
             padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(15.0))),
-        CircleAvatar(
-          backgroundColor: ColorPalette.primaryTextColor,
-          radius: 48.0,
-        ),
+        Column(children: <Widget>[
+          SizedBox(
+            height: ScreenUtil.instance.setHeight(150.0),
+            width:
+                ScreenUtil.instance.setWidth(140.0), // fixed width and height
+            child: snapshot != null
+                ? snapshot.data()['profileUrl'] != null
+                    ? Image.network(
+                        snapshot.data()['profileUrl'],
+                        fit: BoxFit.cover,
+                      )
+                    : CircleAvatar(
+                        backgroundColor: ColorPalette.hintColor,
+                        radius: 48.0,
+                      )
+                : CircleAvatar(
+                    backgroundColor: ColorPalette.primaryTextColor,
+                    radius: 48.0,
+                  ),
+          ),
+        ]),
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -396,7 +446,7 @@ class _ProfilePage extends State<ProfilePage> {
               ),
             ),
             Text(
-              "$_counter",
+              blogSnapshot != null ? "${blogSnapshot.docs.length}" : "0",
               style: TextStyle(
                 color: ColorPalette.primaryTextColor,
                 fontSize: ScreenUtil.instance.setHeight(20.0),
@@ -449,17 +499,21 @@ class _ProfilePage extends State<ProfilePage> {
                               margin: EdgeInsets.all(0),
                               child: Column(
                                 children: [
-                                  Image.asset( // Panduan jika user mengupload foto, ukurannya 180 x 180
+                                  Image.asset(
+                                    // Panduan jika user mengupload foto, ukurannya 180 x 180
                                     'assets/images/iswara_logo.png',
                                     width: ScreenUtil.instance.setWidth(180.0),
-                                    height: ScreenUtil.instance.setHeight(180.0),
+                                    height:
+                                        ScreenUtil.instance.setHeight(180.0),
                                   ),
                                   FlatButton(
                                     child: Icon(
                                       Icons.camera_alt,
                                       color: Colors.redAccent,
                                     ),
-                                    onPressed: null, // action if button pressed
+                                    onPressed: () {
+                                      getImage();
+                                    }, // action if button pressed
                                     color: Colors.white,
                                   ),
                                   TextFormField(
@@ -474,7 +528,10 @@ class _ProfilePage extends State<ProfilePage> {
                                       border: OutlineInputBorder(),
                                     ),
                                   ),
-                                  Padding(padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(15.0))),
+                                  Padding(
+                                      padding: EdgeInsets.only(
+                                          top: ScreenUtil.instance
+                                              .setHeight(15.0))),
                                   TextFormField(
                                     onChanged: (val) {
                                       desc = val;
@@ -606,8 +663,8 @@ class _ProfilePage extends State<ProfilePage> {
                   child: ListTile(
                     leading: Icon(Icons.add_a_photo_outlined),
                     title: Text('Profile Picture'),
-                    onTap: () {
-                      AlertDialog alert = AlertDialog(
+                    onTap: () async {
+                      /*AlertDialog alert = AlertDialog(
                         title: Text('Hi'),
                       );
                       showDialog(
@@ -615,7 +672,11 @@ class _ProfilePage extends State<ProfilePage> {
                         builder: (BuildContext context) {
                           return alert;
                         },
-                      );
+                      );*/
+                      await getProfileImage();
+                      uploadProfilePicture();
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => HomePage()));
                     },
                   ),
                 ),

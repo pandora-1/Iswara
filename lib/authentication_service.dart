@@ -6,6 +6,16 @@ import 'login_page/login_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CrudMethods {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  String uid_string;
+
+  void getUid() {
+    final User user = auth.currentUser;
+    final uid = user.uid;
+    uid_string = uid;
+    // here you write the codes to input the data into firestore
+  }
+
   Future<void> addData(blogData) async {
     FirebaseFirestore.instance
         .collection("blogs")
@@ -17,6 +27,14 @@ class CrudMethods {
 
   getData() async {
     return FirebaseFirestore.instance.collection("blogs").get();
+  }
+
+  getDataProfile() async {
+    getUid();
+    return FirebaseFirestore.instance
+        .collection("blogs")
+        .where('uid', isEqualTo: uid_string)
+        .get();
   }
 }
 
