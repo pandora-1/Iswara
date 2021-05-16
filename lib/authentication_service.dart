@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'home_page/home_page.dart';
 import 'login_page/login_page.dart';
@@ -64,13 +65,18 @@ class AuthenticationService {
           context, MaterialPageRoute(builder: (context) => HomePage()));
       return "Signed in";
     } on FirebaseAuthException catch (e) {
-      return e.message;
+      if (e.code == 'user-not-found') {
+        _showDialog3(context);
+      }
     }
   }
 
   Future<String> signUp(BuildContext context,
       {String name, String email, String password}) async {
     try {
+      if (name.isEmpty || email.isEmpty || password.isEmpty) {
+        throw _showDialog2(context);
+      }
       await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
       Navigator.push(
@@ -81,7 +87,84 @@ class AuthenticationService {
       ref.set({'name': name, 'profileUrl': null});
       return "Signed up";
     } on FirebaseAuthException catch (e) {
-      return e.message;
+      if (e.code == 'email-already-in-use') {
+        _showDialog1(context);
+      }
     }
   }
+}
+
+Future<void> _showDialog1(BuildContext context) {
+  return showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Alert'),
+        content: const Text('User Already Exists'),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Ok'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LoginPage(),
+                ),
+              );
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+Future<void> _showDialog2(BuildContext context) {
+  return showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Alert'),
+        content: const Text('username, email, or password cannot be empty'),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Ok'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LoginPage(),
+                ),
+              );
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+Future<void> _showDialog3(BuildContext context) {
+  return showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Alert'),
+        content: const Text('Wrong email or password'),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Ok'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LoginPage(),
+                ),
+              );
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

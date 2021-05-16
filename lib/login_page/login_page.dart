@@ -69,7 +69,7 @@ class LoginPage extends StatelessWidget {
           maxLength: 20,
           decoration: InputDecoration(
             icon: Icon(Icons.account_circle_outlined),
-            labelText: 'E-mail',
+            labelText: 'Email',
             labelStyle: TextStyle(
               color: ColorPalette.primaryTextColor,
             ),

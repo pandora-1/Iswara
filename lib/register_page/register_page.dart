@@ -188,12 +188,11 @@ class RegisterPage extends StatelessWidget {
           ),
         ),
         RaisedButton(
-          color: Colors.white,
+            color: Colors.white,
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 8.0),
               width: double.infinity,
               height: ScreenUtil.instance.setHeight(50.0),
-
               child: Text(
                 'Create!',
                 style: TextStyle(
