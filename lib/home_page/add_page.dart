@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:iswara/authentication_service.dart';
 import 'package:image_picker/image_picker.dart';
@@ -28,6 +29,17 @@ class _AddPageState extends State<AddPage> {
 
   File _image;
   CrudMethods crudMethods = new CrudMethods();
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
+  DocumentSnapshot snapshot;
+  @override
+  void initState() {
+    super.initState();
+
+    users.doc(auth.currentUser.uid).get().then((result) {
+      snapshot = result;
+      setState(() {});
+    });
+  }
 
   Future getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -55,8 +67,10 @@ class _AddPageState extends State<AddPage> {
         downloadUrl = await res.ref.getDownloadURL();
       });
       print("this is url $downloadUrl");
+      authorName = snapshot.data()['name'];
 
       Map<String, String> blogMap = {
+        "uid": uid_string,
         "imgUrl": downloadUrl,
         "authorName": authorName,
         "title": title,
@@ -77,16 +91,16 @@ class _AddPageState extends State<AddPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                "Flutter",
+                "Upload",
                 style: TextStyle(fontSize: 22),
               ),
               Text(
-                "Blog",
+                "Data",
                 style: TextStyle(fontSize: 22, color: Colors.blue),
               )
             ],
           ),
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.black,
           elevation: 0.0,
           actions: <Widget>[
             GestureDetector(
@@ -147,12 +161,6 @@ class _AddPageState extends State<AddPage> {
                     margin: EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
                       children: <Widget>[
-                        TextField(
-                          decoration: InputDecoration(hintText: "Author Name"),
-                          onChanged: (val) {
-                            authorName = val;
-                          },
-                        ),
                         TextField(
                           decoration: InputDecoration(hintText: "Title"),
                           onChanged: (val) {

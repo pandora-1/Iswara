@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:iswara/home_page/home_page.dart';
 import 'package:provider/provider.dart';
 import 'package:random_string/random_string.dart';
+import 'package:storage_path/storage_path.dart';
 import '../authentication_service.dart';
 import 'dart:io';
 
@@ -262,16 +265,32 @@ class _ProfilePage extends State<ProfilePage> {
     // here you write the codes to input the data into firestore
   }
 
-  String authorName, title, desc, username;
+  String authorName, title, desc, username, _imagePath;
 
+  Image image1;
   File _image, _profileImage;
   CrudMethods crudMethods = new CrudMethods();
 
+  Future pickImage() async {
+    ImagePicker.pickImage(source: ImageSource.gallery).then((onValue) {
+      StoragePath.imagesPath.then((dynamic dirPath) {
+        final myPath = dirPath;
+        File file = new File('$myPath/capture.png');
+        file.writeAsBytes(onValue.readAsBytesSync()).then((savedFile) {
+          setState(() {
+            _imagePath = '$myPath/capture.png';
+          });
+        });
+      });
+    });
+  }
+
   Future getImage() async {
     var pickedFile = await ImagePicker.pickImage(source: ImageSource.gallery);
-
+    var bytes = pickedFile.readAsBytesSync();
     setState(() {
       if (pickedFile != null) {
+        image1 = Image.memory(bytes);
         _image = pickedFile;
       } else {
         print('No image selected.');
@@ -375,6 +394,7 @@ class _ProfilePage extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    _image = _image;
     double defaultScreenWidth = 400.0;
     double defaultScreenHeight = 810.0;
     ScreenUtil.instance = ScreenUtil(
@@ -480,7 +500,9 @@ class _ProfilePage extends State<ProfilePage> {
             color: ColorPalette.primaryTextColor,
           ),
           onPressed: () {
-            showDialog(
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => AddPage()));
+            /*showDialog(
                 context: context,
                 builder: (_) => new AlertDialog(
                       shape: RoundedRectangleBorder(
@@ -501,12 +523,10 @@ class _ProfilePage extends State<ProfilePage> {
                                   scrollDirection: Axis.vertical,
                                   child: Column(
                                     children: [
-                                      Image.asset(
-                                        // Panduan jika user mengupload foto, ukurannya 180 x 180
-                                        'assets/images/iswara_logo.png',
-                                        width: ScreenUtil.instance.setWidth(180.0),
-                                        height:
-                                        ScreenUtil.instance.setHeight(180.0),
+                                      Center(
+                                        child: image1 != null
+                                            ? image1
+                                            : Text('No image selected.'),
                                       ),
                                       FlatButton(
                                         child: Icon(
@@ -525,7 +545,8 @@ class _ProfilePage extends State<ProfilePage> {
                                         decoration: InputDecoration(
                                           labelText: 'Title',
                                           labelStyle: TextStyle(
-                                            color: ColorPalette.primaryTextColor,
+                                            color:
+                                                ColorPalette.primaryTextColor,
                                           ),
                                           border: OutlineInputBorder(),
                                         ),
@@ -543,40 +564,38 @@ class _ProfilePage extends State<ProfilePage> {
                                         decoration: InputDecoration(
                                           labelText: 'Story',
                                           labelStyle: TextStyle(
-                                            color: ColorPalette.primaryTextColor,
+                                            color:
+                                                ColorPalette.primaryTextColor,
                                           ),
                                           border: OutlineInputBorder(),
                                         ),
                                       ),
-                                      Padding(padding: EdgeInsets.only(top: 15.0)),
+                                      Padding(
+                                          padding: EdgeInsets.only(top: 15.0)),
                                       TextButton(
                                         child: Text("Post Story".toUpperCase(),
                                             style: TextStyle(fontSize: 14)),
                                         style: ButtonStyle(
-                                            padding:
-                                            MaterialStateProperty.all<EdgeInsets>(
-                                                EdgeInsets.all(15)),
+                                            padding: MaterialStateProperty.all<
+                                                EdgeInsets>(EdgeInsets.all(15)),
                                             foregroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                                Colors.red),
+                                                MaterialStateProperty.all<
+                                                    Color>(Colors.red),
                                             shape: MaterialStateProperty.all<
-                                                RoundedRectangleBorder>(
+                                                    RoundedRectangleBorder>(
                                                 RoundedRectangleBorder(
                                                     borderRadius:
-                                                    BorderRadius.circular(18.0),
-                                                    side: BorderSide(
-                                                        color: ColorPalette.primaryTextColor)))),
+                                                        BorderRadius.circular(18.0),
+                                                    side: BorderSide(color: ColorPalette.primaryTextColor)))),
                                         onPressed: () {
                                           uploadData();
                                         },
                                       ),
                                     ],
-                                  )
-                              )
-                              );
+                                  )));
                         },
                       ),
-                    ));
+                    ));*/
           },
         )
       ],
