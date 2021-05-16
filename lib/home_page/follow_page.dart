@@ -354,37 +354,51 @@ class _FollowPage extends State<FollowPage> {
           color: ColorPalette.primaryColor,
           child: ListView(
             children: <Widget>[
-              Padding(padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(100.0))),
+              Padding(padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(250.0))),
               ListTile(
                 title: Text("DEKAP",
                   style: TextStyle(
-                      color: ColorPalette.primaryTextColor,
+                    color: ColorPalette.primaryTextColor,
                     fontSize: ScreenUtil.instance.setWidth(25.0),
                   ),
+                ),
+              ),
+              Padding(padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(30.0))),
+              ListTile(
+                title: Text("DENGARKAN",
+                  style: TextStyle(
+                    color: ColorPalette.primaryTextColor,
+                    fontSize: ScreenUtil.instance.setWidth(25.0),
                   ),
+                ),
+                onTap: () {
+                  Navigator.push(
+                      context, new MaterialPageRoute(
+                      builder: (context) => Dengarkan()
+                  ));
+                },
               ),
+              Padding(padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(30.0))),
               ListTile(
-                title: Text(
-                  "DENGARKAN",
+                title: Text("DAMPINGI",
                   style: TextStyle(
-                      color: ColorPalette.primaryTextColor,
-                      fontSize: ScreenUtil.instance.setWidth(25.0)
-                  ),),
-
-              ),
-              ListTile(
-                title: Text(
-                  "DAMPINGI",
-                  style: TextStyle(
-                      color: ColorPalette.primaryTextColor,
-                      fontSize: ScreenUtil.instance.setWidth(25.0),
-                  ),),
-
+                    color: ColorPalette.primaryTextColor,
+                    fontSize: ScreenUtil.instance.setWidth(25.0),
+                  ),
+                ),
+                onTap: () {
+                  Navigator.push(
+                      context, new MaterialPageRoute(
+                      builder: (context) => Dampingi()
+                  ));
+                },
               ),
             ],
           ),
         )
       ),
+
+
       body: Container(
         color: ColorPalette.primaryColor,
         child: blogSnapshot != null
@@ -487,8 +501,15 @@ class _FollowPage extends State<FollowPage> {
                                       child: RaisedButton(
                                         color: ColorPalette.primaryTextColor,
                                         onPressed: () {
+
                                           Navigator.push(
-                                              context, new MaterialPageRoute());
+                                              context, new MaterialPageRoute(
+                                            builder: (context) => ShowContent(
+                                              title:  blogSnapshot.docs[index].data()['title'],
+                                              author: blogSnapshot.docs[index].data()['authorName'],
+                                              description: blogSnapshot.docs[index].data()['desc'],
+                                              images: blogSnapshot.docs[index].data()['imgUrl'],)
+                                          ));
                                         },
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
@@ -499,6 +520,7 @@ class _FollowPage extends State<FollowPage> {
                                           "Read More",
                                           style: new TextStyle(
                                               color: Colors.white),
+
                                         ),
                                       ),
                                     ),
@@ -531,9 +553,6 @@ class _FollowPage extends State<FollowPage> {
       children: <Widget>[
         AppBar(
 
-          /* leading: IconButton(
-              icon: Icon(Icons.menu),
-           ), */
           title: Text(
             'DEKAP',
             style: TextStyle(
@@ -652,3 +671,126 @@ class ReusableComponent {
   });
 }
 
+
+class ShowContent extends StatelessWidget {
+  final String title;
+  final String author;
+  final String description;
+  final String images;
+  ShowContent({this.title, this.author, this.description, this.images});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(author, style: TextStyle(color: ColorPalette.primaryTextColor),),
+        backgroundColor: ColorPalette.primaryColor,
+      ),
+      body: Container(
+        color: ColorPalette.primaryColor,
+          padding: EdgeInsets.all( ScreenUtil.instance
+              .setHeight(20.0),),
+          alignment: Alignment.topLeft,
+
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(padding: EdgeInsets.only(top: ScreenUtil.instance
+                    .setHeight(20.0),)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: ScreenUtil.instance
+                          .setHeight(190.0),
+                      width: ScreenUtil.instance.setWidth(
+                          190.0), // fixed width and height
+                      child: Image.network(
+                        images,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(padding: EdgeInsets.only(top: ScreenUtil.instance
+                    .setHeight(20.0),)),
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: ScreenUtil.instance.setHeight(35.0),
+                    color: ColorPalette.primaryTextColor
+                  ),
+                ),
+                Padding(padding: EdgeInsets.only(top: ScreenUtil.instance
+                    .setHeight(2.0),)),
+                Text(
+                  author,
+                  style: TextStyle(
+                    fontSize: ScreenUtil.instance.setHeight(20.0),
+                    color: ColorPalette.primaryTextColor
+                  ),
+                ),
+                Padding(padding: EdgeInsets.only(top: ScreenUtil.instance
+                    .setHeight(10.0),)),
+                Text(
+                  description,
+                  style: TextStyle(
+                    fontSize: ScreenUtil.instance.setHeight(20.0),
+                    color: ColorPalette.primaryTextColor
+                  ),
+                )
+      ],
+    ),
+    ),
+    );
+  }
+}
+
+class Dengarkan extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: ColorPalette.primaryColor,
+        appBar: AppBar(
+          title: Text(
+            "DENGARKAN", style: TextStyle(color: ColorPalette.primaryTextColor),),
+          backgroundColor: ColorPalette.primaryColor,
+        ),
+        body: Center(
+          child: Text(
+            "Akan segera hadir untuk Perempuan Indonesia",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: ColorPalette.primaryTextColor,
+              fontSize: 30.0,
+
+            ),
+          ),
+        )
+    );
+  }
+}
+
+class Dampingi extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: ColorPalette.primaryColor,
+        appBar: AppBar(
+          title: Text(
+            "DAMPINGI", style: TextStyle(color: ColorPalette.primaryTextColor),),
+          backgroundColor: ColorPalette.primaryColor,
+        ),
+        body: Center(
+          child: Text(
+            "Akan segera hadir untuk Perempuan Indonesia",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: ColorPalette.primaryTextColor,
+              fontSize: 30.0,
+            ),
+          ),
+        )
+    );
+  }
+}

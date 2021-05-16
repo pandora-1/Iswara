@@ -668,19 +668,10 @@ class _ProfilePage extends State<ProfilePage> {
                     leading: Icon(Icons.add_a_photo_outlined),
                     title: Text('Profile Picture'),
                     onTap: () async {
-                      /*AlertDialog alert = AlertDialog(
-                        title: Text('Hi'),
-                      );
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return alert;
-                        },
-                      );*/
                       await getProfileImage();
                       uploadProfilePicture();
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => HomePage()));
+                          MaterialPageRoute(builder: (context) => ProfilePage()));
                     },
                   ),
                 ),
