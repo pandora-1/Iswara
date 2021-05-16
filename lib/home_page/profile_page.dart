@@ -449,6 +449,19 @@ class _ProfilePage extends State<ProfilePage> {
                               margin: EdgeInsets.all(0),
                               child: Column(
                                 children: [
+                                  Image.asset( // Panduan jika user mengupload foto, ukurannya 180 x 180
+                                    'assets/images/iswara_logo.png',
+                                    width: ScreenUtil.instance.setWidth(180.0),
+                                    height: ScreenUtil.instance.setHeight(180.0),
+                                  ),
+                                  FlatButton(
+                                    child: Icon(
+                                      Icons.camera_alt,
+                                      color: Colors.redAccent,
+                                    ),
+                                    onPressed: null, // action if button pressed
+                                    color: Colors.white,
+                                  ),
                                   TextFormField(
                                     onChanged: (val) {
                                       title = val;
@@ -461,7 +474,7 @@ class _ProfilePage extends State<ProfilePage> {
                                       border: OutlineInputBorder(),
                                     ),
                                   ),
-                                  Padding(padding: EdgeInsets.only(top: 15.0)),
+                                  Padding(padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(15.0))),
                                   TextFormField(
                                     onChanged: (val) {
                                       desc = val;

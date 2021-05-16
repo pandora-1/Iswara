@@ -419,15 +419,16 @@ class _FollowPage extends State<FollowPage> {
                                     Padding(
                                         padding: EdgeInsets.only(
                                             right: ScreenUtil.instance
-                                                .setWidth(15.0))),
+                                                .setWidth(15.0),
+                                            )),
                                     Expanded(
                                         flex: 6,
                                         child: Column(children: <Widget>[
                                           SizedBox(
                                             height: ScreenUtil.instance
-                                                .setWidth(161.0),
+                                                .setHeight(150.0),
                                             width: ScreenUtil.instance.setWidth(
-                                                161.0), // fixed width and height
+                                                140.0), // fixed width and height
                                             child: Image.network(
                                               blogSnapshot.docs[index]
                                                   .data()['imgUrl'],
@@ -466,10 +467,10 @@ class _FollowPage extends State<FollowPage> {
                                       ),
                                     ),
                                     Padding(
-                                        padding: EdgeInsets.only(left: 190.0)),
+                                        padding: EdgeInsets.only(left: ScreenUtil.instance.setWidth(190.0)), ),
                                     Icon(
                                       Icons.star_border,
-                                      size: 40.0,
+                                      size: ScreenUtil.instance.setHeight(40.0),
                                       color: ColorPalette.primaryTextColor,
                                     ),
                                   ],

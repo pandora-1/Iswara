@@ -5,7 +5,6 @@ import 'package:iswara/home_page/home_page.dart';
 import 'package:iswara/login_page/login_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-
 import '../authentication_service.dart';
 import '../login_page/login_page.dart';
 
@@ -51,7 +50,7 @@ class RegisterPage extends StatelessWidget {
       children: <Widget>[
         Padding(
             padding: EdgeInsets.only(
-          top: ScreenUtil.instance.setHeight(60.0),
+          top: ScreenUtil.instance.setHeight(10.0),
         )),
         Image.asset(
           "assets/images/iswara_logo.png",
@@ -137,7 +136,7 @@ class RegisterPage extends StatelessWidget {
           ),
           onPressed: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomePage()));
+                context, MaterialPageRoute(builder: (context) => LoginPage()));
           },
         ),
         Padding(
@@ -189,10 +188,12 @@ class RegisterPage extends StatelessWidget {
           ),
         ),
         RaisedButton(
+          color: Colors.white,
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 8.0),
               width: double.infinity,
               height: ScreenUtil.instance.setHeight(50.0),
+
               child: Text(
                 'Create!',
                 style: TextStyle(
@@ -203,7 +204,7 @@ class RegisterPage extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(30.0),
+                borderRadius: BorderRadius.circular(5.0),
               ),
             ),
             onPressed: () {

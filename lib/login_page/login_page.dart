@@ -171,6 +171,7 @@ class LoginPage extends StatelessWidget {
           ),
         ),
         RaisedButton(
+          color: Colors.white,
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 8.0),
               width: double.infinity,
