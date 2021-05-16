@@ -458,7 +458,7 @@ class _FollowPage extends State<FollowPage> {
                                                   blogSnapshot.docs[index]
                                                       .data()['desc'],
                                                   textAlign: TextAlign.left,
-                                                  maxLines: 4,
+                                                  maxLines: 2,
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   style: TextStyle(

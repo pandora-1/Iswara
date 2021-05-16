@@ -207,7 +207,7 @@ class DataSearch extends SearchDelegate<String> {
                                             ScreenUtil.instance.setWidth(20.0),
                                       )),
                                   Text(
-                                      listWords[index]
+                                      suggestionList[index]
                                           .authorlist, // untuk author
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
@@ -218,7 +218,7 @@ class DataSearch extends SearchDelegate<String> {
                                           top: ScreenUtil.instance
                                               .setWidth(10.0),
                                           bottom: 0.0)),
-                                  Text(listWords[index].descriptionlist,
+                                  Text(suggestionList[index].descriptionlist,
                                       textAlign: TextAlign.left,
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
@@ -237,7 +237,7 @@ class DataSearch extends SearchDelegate<String> {
                                 width: ScreenUtil.instance
                                     .setWidth(140.0), // fixed width and height
                                 child: Image.network(
-                                  listWords[index].imagelist,
+                                  suggestionList[index].imagelist,
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -262,11 +262,11 @@ class DataSearch extends SearchDelegate<String> {
                                   context,
                                   new MaterialPageRoute(
                                       builder: (context) => ShowContent(
-                                            title: listWords[index].titlelist,
-                                            author: listWords[index].authorlist,
-                                            description: listWords[index]
+                                            title: suggestionList[index].titlelist,
+                                            author: suggestionList[index].authorlist,
+                                            description: suggestionList[index]
                                                 .descriptionlist,
-                                            images: listWords[index].imagelist,
+                                            images: suggestionList[index].imagelist,
                                           )));
                             },
                             shape: RoundedRectangleBorder(
@@ -346,7 +346,7 @@ class DataSearch extends SearchDelegate<String> {
                                         fontSize:
                                             ScreenUtil.instance.setWidth(20.0),
                                       )),
-                                  Text(listWords[index].authorlist,
+                                  Text(suggestionList[index].authorlist,
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                           fontSize: ScreenUtil.instance
@@ -356,7 +356,7 @@ class DataSearch extends SearchDelegate<String> {
                                           top: ScreenUtil.instance
                                               .setWidth(10.0),
                                           bottom: 0.0)),
-                                  Text(listWords[index].descriptionlist,
+                                  Text(suggestionList[index].descriptionlist,
                                       textAlign: TextAlign.left,
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
@@ -375,7 +375,7 @@ class DataSearch extends SearchDelegate<String> {
                                 width: ScreenUtil.instance
                                     .setWidth(140.0), // fixed width and height
                                 child: Image.network(
-                                  listWords[index].imagelist,
+                                  suggestionList[index].imagelist,
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -400,11 +400,11 @@ class DataSearch extends SearchDelegate<String> {
                                   context,
                                   new MaterialPageRoute(
                                       builder: (context) => ShowContent(
-                                            title: listWords[index].titlelist,
-                                            author: listWords[index].authorlist,
-                                            description: listWords[index]
+                                            title: suggestionList[index].titlelist,
+                                            author: suggestionList[index].authorlist,
+                                            description: suggestionList[index]
                                                 .descriptionlist,
-                                            images: listWords[index].imagelist,
+                                            images: suggestionList[index].imagelist,
                                           )));
                             },
                             shape: RoundedRectangleBorder(
