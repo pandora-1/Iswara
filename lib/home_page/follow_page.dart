@@ -686,62 +686,67 @@ class ShowContent extends StatelessWidget {
         title: Text(author, style: TextStyle(color: ColorPalette.primaryTextColor),),
         backgroundColor: ColorPalette.primaryColor,
       ),
-      body: Container(
-        color: ColorPalette.primaryColor,
-          padding: EdgeInsets.all( ScreenUtil.instance
-              .setHeight(20.0),),
-          alignment: Alignment.topLeft,
+      backgroundColor: ColorPalette.primaryColor,
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+       child: Container(
+         color: ColorPalette.primaryColor,
+         padding: EdgeInsets.all( ScreenUtil.instance
+             .setHeight(20.0),),
+         alignment: Alignment.topLeft,
 
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(padding: EdgeInsets.only(top: ScreenUtil.instance
-                    .setHeight(20.0),)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: ScreenUtil.instance
-                          .setHeight(190.0),
-                      width: ScreenUtil.instance.setWidth(
-                          190.0), // fixed width and height
-                      child: Image.network(
-                        images,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(padding: EdgeInsets.only(top: ScreenUtil.instance
-                    .setHeight(20.0),)),
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: ScreenUtil.instance.setHeight(35.0),
-                    color: ColorPalette.primaryTextColor
-                  ),
-                ),
-                Padding(padding: EdgeInsets.only(top: ScreenUtil.instance
-                    .setHeight(2.0),)),
-                Text(
-                  author,
-                  style: TextStyle(
-                    fontSize: ScreenUtil.instance.setHeight(20.0),
-                    color: ColorPalette.primaryTextColor
-                  ),
-                ),
-                Padding(padding: EdgeInsets.only(top: ScreenUtil.instance
-                    .setHeight(10.0),)),
-                Text(
-                  description,
-                  style: TextStyle(
-                    fontSize: ScreenUtil.instance.setHeight(20.0),
-                    color: ColorPalette.primaryTextColor
-                  ),
-                )
-      ],
-    ),
-    ),
+
+         child: Column(
+           crossAxisAlignment: CrossAxisAlignment.start,
+           children: <Widget>[
+             Padding(padding: EdgeInsets.only(top: ScreenUtil.instance
+                 .setHeight(20.0),)),
+             Row(
+               mainAxisAlignment: MainAxisAlignment.center,
+               children: [
+                 SizedBox(
+                   height: ScreenUtil.instance
+                       .setHeight(190.0),
+                   width: ScreenUtil.instance.setWidth(
+                       190.0), // fixed width and height
+                   child: Image.network(
+                     images,
+                     fit: BoxFit.cover,
+                   ),
+                 ),
+               ],
+             ),
+             Padding(padding: EdgeInsets.only(top: ScreenUtil.instance
+                 .setHeight(20.0),)),
+             Text(
+               title,
+               style: TextStyle(
+                   fontSize: ScreenUtil.instance.setHeight(35.0),
+                   color: ColorPalette.primaryTextColor
+               ),
+             ),
+             Padding(padding: EdgeInsets.only(top: ScreenUtil.instance
+                 .setHeight(2.0),)),
+             Text(
+               author,
+               style: TextStyle(
+                   fontSize: ScreenUtil.instance.setHeight(20.0),
+                   color: ColorPalette.primaryTextColor
+               ),
+             ),
+             Padding(padding: EdgeInsets.only(top: ScreenUtil.instance
+                 .setHeight(10.0),)),
+             Text(
+               description,
+               style: TextStyle(
+                   fontSize: ScreenUtil.instance.setHeight(20.0),
+                   color: ColorPalette.primaryTextColor
+               ),
+             )
+           ],
+         ),
+       ),
+      )
     );
   }
 }
