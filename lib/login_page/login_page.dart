@@ -67,7 +67,7 @@ class LoginPage extends StatelessWidget {
         ),
         TextFormField(
           controller: emailController,
-          maxLength: 20,
+          maxLength: 80,
           decoration: InputDecoration(
             icon: Icon(Icons.account_circle_outlined),
             labelText: 'Email',
@@ -84,7 +84,7 @@ class LoginPage extends StatelessWidget {
         ),
         TextFormField(
           controller: passwordController,
-          maxLength: 20,
+          maxLength: 40,
           decoration: const InputDecoration(
             icon: Icon(Icons.vpn_key_outlined),
             labelText: 'Password',

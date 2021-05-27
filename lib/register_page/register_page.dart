@@ -69,7 +69,7 @@ class RegisterPage extends StatelessWidget {
         ),
         TextFormField(
           controller: nameController,
-          maxLength: 20,
+          maxLength: 25,
           decoration: InputDecoration(
             icon: Icon(Icons.account_circle_outlined),
             labelText: 'Username',
@@ -86,7 +86,7 @@ class RegisterPage extends StatelessWidget {
         ),
         TextFormField(
           controller: emailController,
-          maxLength: 30,
+          maxLength: 80,
           decoration: InputDecoration(
             icon: Icon(Icons.email_outlined),
             labelText: 'Email',
@@ -103,7 +103,7 @@ class RegisterPage extends StatelessWidget {
         ),
         TextFormField(
           controller: passwordController,
-          maxLength: 20,
+          maxLength: 40,
           decoration: const InputDecoration(
             icon: Icon(Icons.vpn_key_outlined),
             labelText: 'Password',

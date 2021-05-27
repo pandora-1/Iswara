@@ -32,21 +32,23 @@ List<ListWords> listWords =
 ]*/
     ;
 
-// urutannya ada title, author, desc, image, sama id list
+// urutannya ada title, author, desc, image, sama favorite list
+
+// ada yg ak ubah, dari id list -> favorite list, type bool
 class ListWords {
   String titlelist;
   String authorlist;
   String descriptionlist;
   String imagelist;
-  String idlist;
+  bool favoritelist;
 
   ListWords(String titlelist, String authorlist, String descriptionlist,
-      String imagelist, String idlist) {
+      String imagelist, bool favoritelist) {
     this.titlelist = titlelist;
     this.authorlist = authorlist;
     this.descriptionlist = descriptionlist;
     this.imagelist = imagelist;
-    this.idlist = idlist;
+    this.favoritelist = favoritelist;
   }
 }
 
@@ -85,6 +87,7 @@ class _SearchPage extends State<SearchPage> {
 
   QuerySnapshot blogSnapshot;
 
+
   @override
   void initState() {
     super.initState();
@@ -115,7 +118,7 @@ class _SearchPage extends State<SearchPage> {
                 blogSnapshot != null
                     ? blogSnapshot.docs.forEach((el) {
                         listWords.add(ListWords(el['title'], el['authorName'],
-                            el['desc'], el['imgUrl'], '1'));
+                            el['desc'], el['imgUrl'], false));
                       })
                     : print("ok");
                 showSearch(context: context, delegate: DataSearch(listWords));
@@ -282,11 +285,55 @@ class DataSearch extends SearchDelegate<String> {
                             padding: EdgeInsets.only(
                           left: ScreenUtil.instance.setWidth(190.0),
                         )),
-                        Icon(
-                          Icons.star_border,
-                          size: ScreenUtil.instance.setHeight(40.0),
+                        IconButton(
+                          icon: Icon(suggestionList[index].favoritelist? Icons.star : Icons.star_border, size: ScreenUtil.instance.setHeight(40.0),),
                           color: ColorPalette.primaryTextColor,
-                        ),
+                              onPressed: () {
+
+                                if(suggestionList[index].favoritelist) {
+                                  suggestionList[index].favoritelist = false;
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('Success!'),
+                                        content: Text('This post will remove from your favorite'),
+                                        actions: [
+                                          FlatButton(
+                                            textColor: Color(0xFF6200EE),
+                                            onPressed: () {
+                                              Navigator.of(context, rootNavigator: true).pop('dialog');
+                                            },
+                                            child: Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                  // remove data from database
+                                } else {
+                                  suggestionList[index].favoritelist = true;
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('Success!'),
+                                        content: Text('This post will add to your favorite'),
+                                        actions: [
+                                          FlatButton(
+                                            textColor: Color(0xFF6200EE),
+                                            onPressed: () {
+                                              Navigator.of(context, rootNavigator: true).pop('dialog');
+                                            },
+                                            child: Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                  // add data to database
+                                }
+                              }),
                       ],
                     )
                   ],
@@ -420,10 +467,54 @@ class DataSearch extends SearchDelegate<String> {
                             padding: EdgeInsets.only(
                           left: ScreenUtil.instance.setWidth(190.0),
                         )),
-                        Icon(
-                          Icons.star_border,
-                          size: ScreenUtil.instance.setHeight(40.0),
+                        IconButton(
+                          icon: Icon(suggestionList[index].favoritelist? Icons.star : Icons.star_border, size: ScreenUtil.instance.setHeight(40.0),),
                           color: ColorPalette.primaryTextColor,
+                          onPressed: () {
+                              if(suggestionList[index].favoritelist) {
+                                suggestionList[index].favoritelist = false;
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('Success!'),
+                                      content: Text('This post will remove from your favorite'),
+                                      actions: [
+                                        FlatButton(
+                                          textColor: Color(0xFF6200EE),
+                                          onPressed: () {
+                                            Navigator.of(context, rootNavigator: true).pop('dialog');
+                                          },
+                                          child: Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                                // remove data from database
+                              } else {
+                                suggestionList[index].favoritelist = true;
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('Success!'),
+                                      content: Text('This post will add to your favorite'),
+                                      actions: [
+                                        FlatButton(
+                                          textColor: Color(0xFF6200EE),
+                                          onPressed: () {
+                                            Navigator.of(context, rootNavigator: true).pop('dialog');
+                                          },
+                                          child: Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                                // add data to database
+                              }
+                          },
                         ),
                       ],
                     )

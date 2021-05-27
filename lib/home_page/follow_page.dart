@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iswara/home_page/home_page.dart';
 import 'package:iswara/authentication_service.dart';
 import 'package:iswara/constants.dart';
+import 'package:iswara/home_page/favorites.dart';
 
 /*
 class FollowPage extends StatefulWidget {
@@ -316,14 +317,16 @@ class FollowPage extends StatefulWidget {
 
 class _FollowPage extends State<FollowPage> {
   static const routeName = "/homepage";
-  /*var items = [
+  var items = [
     ReusableComponent(title: "Jakarta, Kota Paling Rentan Bahaya Lingkungan di Dunia", author: "Safir Makki", description: "Jakarta, CNN Indonesia -- DKI Jakarta menduduki peringkat teratas daftar kota paling rentan bahaya lingkungan di dunia. Menurut sebuah penilaian atau indeks iklim risiko yang diterbitkan Jumat (7/5), Jakarta berisiko tenggelam.", image: "./iswara_logo.png", linkToArticle: "./1"),
     ReusableComponent(title: "Lebaran 2021, Asa dalam Mangkuk Mi dan Terminal Mati", author: "Feybien Ramayanti", description: "Jakarta, CNN Indonesia -- Sepasang mata pria hampir paruh baya di hadapan saya memandang lurus ke ruang lowong di depannya. Hamparan lengang itu lebih mirip lapangan sonder rumput ketimbang terminal.Lobang pada lahan lapang beraspal itu jadi kelihatan karena tak lagi tertutup badan kendaraan. Tak satupun bus terparkir di sana. Apalagi penumpang. Tidak pula orang-orang dengan gembolan kardus-kardus atau tas gendong. Lalu lalang agen perjalanan pun tak ada.", image: "./iswara_logo.png", linkToArticle: "./1"),
     ReusableComponent(title: "Cara Menandai Lokasi di Google Maps untuk Tambah Alamat", author: "Adhi Wicaksono", description: "Jakarta, CNN Indonesia -- Keberadaan teknologi kian hari berguna untuk memudahkan hidup manusia. Salah satunya dengan fitur Maps pada Google Maps atau peta digital yang diakses menggunakan ponsel smartphone.", image: "./iswara_logo.png", linkToArticle: "./1")
-  ];*/
+  ];
   CrudMethods crudMethods = new CrudMethods();
 
   QuerySnapshot blogSnapshot;
+
+  bool isSave = false; // ini nanti diganti sama data yg ada di database mu itu ya
 
   @override
   void initState() {
@@ -526,10 +529,56 @@ class _FollowPage extends State<FollowPage> {
                                     ),
                                     Padding(
                                         padding: EdgeInsets.only(left: ScreenUtil.instance.setWidth(190.0)), ),
-                                    Icon(
-                                      Icons.star_border,
-                                      size: ScreenUtil.instance.setHeight(40.0),
+                                    IconButton(
+                                      icon: Icon(isSave? Icons.star : Icons.star_border, size: ScreenUtil.instance.setHeight(40.0),),
                                       color: ColorPalette.primaryTextColor,
+                                      onPressed: () {
+                                        setState(() {
+                                          if(isSave) {
+                                            isSave = false;
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Text('Success!'),
+                                                  content: Text('This post will remove from your favorite'),
+                                                  actions: [
+                                                    FlatButton(
+                                                      textColor: Color(0xFF6200EE),
+                                                      onPressed: () {
+                                                        Navigator.of(context, rootNavigator: true).pop('dialog');
+                                                      },
+                                                      child: Text('OK'),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                            // remove data from database favorite
+                                          } else {
+                                            isSave = true;
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Text('Success!'),
+                                                  content: Text('This post will add to your favorite'),
+                                                  actions: [
+                                                    FlatButton(
+                                                      textColor: Color(0xFF6200EE),
+                                                      onPressed: () {
+                                                        Navigator.of(context, rootNavigator: true).pop('dialog');
+                                                      },
+                                                      child: Text('OK'),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                            // add data to database favorite
+                                          }
+                                        });
+                                      },
                                     ),
                                   ],
                                 )
@@ -560,7 +609,13 @@ class _FollowPage extends State<FollowPage> {
             ),
           ),
           actions: [
-            Icon(Icons.star_border_purple500_outlined),
+            IconButton(icon: Icon(Icons.star_border_purple500_outlined),
+                onPressed: () {
+                  Navigator.push(
+                      context, new MaterialPageRoute(
+                      builder: (context) => FavoritePage()
+                  ));
+                }),
             Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: ScreenUtil.instance.setHeight(4.0))),
@@ -568,7 +623,10 @@ class _FollowPage extends State<FollowPage> {
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: Icon(Icons.search),
             ), */
-            Icon(Icons.chat_outlined),
+            IconButton(
+                icon: Icon(Icons.chat_outlined),
+
+            ),
             Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: ScreenUtil.instance.setHeight(4.0))),
