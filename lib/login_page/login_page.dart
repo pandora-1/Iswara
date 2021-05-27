@@ -9,6 +9,7 @@ import '../authentication_service.dart';
 class LoginPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  bool _isLoading = false;
 
   static const routeName = "/loginPage";
   @override
@@ -190,11 +191,16 @@ class LoginPage extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              context.read<AuthenticationService>().signIn(
-                    context,
-                    email: emailController.text.trim(),
-                    password: passwordController.text.trim(),
-                  );
+              if (_isLoading == true) {
+                _isLoading = false;
+              } else {
+                _isLoading = true;
+                context.read<AuthenticationService>().signIn(
+                      context,
+                      email: emailController.text.trim(),
+                      password: passwordController.text.trim(),
+                    );
+              }
             }),
       ],
     );

@@ -311,6 +311,9 @@ class _ProfilePage extends State<ProfilePage> {
   }
 
   uploadProfilePicture() async {
+    setState(() {
+      _isLoading = true;
+    });
     String _downloadUrl;
     FirebaseStorage storage = FirebaseStorage.instance;
     Reference _ref = storage.ref().child("img").child("$uid_string.jpg");
@@ -430,79 +433,85 @@ class _ProfilePage extends State<ProfilePage> {
   }
 
   Widget _contentProfilePage() {
-    return Column(
-      children: <Widget>[
-        Padding(
-            padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(15.0))),
-        Column(children: <Widget>[
-          SizedBox(
-            height: ScreenUtil.instance.setHeight(150.0),
-            width:
-                ScreenUtil.instance.setWidth(140.0), // fixed width and height
-            child: snapshot != null
-                ? snapshot.data()['profileUrl'] != null
-                    ? Image.network(
-                        snapshot.data()['profileUrl'],
-                        fit: BoxFit.cover,
-                      )
-                    : CircleAvatar(
-                        backgroundColor: ColorPalette.hintColor,
-                        radius: 48.0,
-                      )
-                : CircleAvatar(
-                    backgroundColor: ColorPalette.primaryTextColor,
-                    radius: 48.0,
+    return _isLoading
+        ? Container(
+            child: CircularProgressIndicator(),
+            alignment: Alignment.center,
+          )
+        : Column(
+            children: <Widget>[
+              Padding(
+                  padding: EdgeInsets.only(
+                      top: ScreenUtil.instance.setHeight(15.0))),
+              Column(children: <Widget>[
+                SizedBox(
+                  height: ScreenUtil.instance.setHeight(150.0),
+                  width: ScreenUtil.instance
+                      .setWidth(140.0), // fixed width and height
+                  child: snapshot != null
+                      ? snapshot.data()['profileUrl'] != null
+                          ? Image.network(
+                              snapshot.data()['profileUrl'],
+                              fit: BoxFit.cover,
+                            )
+                          : CircleAvatar(
+                              backgroundColor: ColorPalette.hintColor,
+                              radius: 48.0,
+                            )
+                      : CircleAvatar(
+                          backgroundColor: ColorPalette.primaryTextColor,
+                          radius: 48.0,
+                        ),
+                ),
+              ]),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    snapshot != null ? snapshot.data()['name'] : "@Username",
+                    style: TextStyle(
+                      color: ColorPalette.primaryTextColor,
+                      fontSize: ScreenUtil.instance.setHeight(20.0),
+                    ),
                   ),
-          ),
-        ]),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              snapshot != null ? snapshot.data()['name'] : "@Username",
-              style: TextStyle(
-                color: ColorPalette.primaryTextColor,
-                fontSize: ScreenUtil.instance.setHeight(20.0),
+                  Text(
+                    blogSnapshot != null ? "${blogSnapshot.docs.length}" : "0",
+                    style: TextStyle(
+                      color: ColorPalette.primaryTextColor,
+                      fontSize: ScreenUtil.instance.setHeight(20.0),
+                    ),
+                  ),
+                  Text(
+                    "Writings",
+                    style: TextStyle(
+                      color: ColorPalette.primaryTextColor,
+                      fontSize: ScreenUtil.instance.setHeight(20.0),
+                    ),
+                  ),
+                ],
               ),
-            ),
-            Text(
-              blogSnapshot != null ? "${blogSnapshot.docs.length}" : "0",
-              style: TextStyle(
-                color: ColorPalette.primaryTextColor,
-                fontSize: ScreenUtil.instance.setHeight(20.0),
+              Padding(
+                  padding: EdgeInsets.symmetric(
+                      vertical: ScreenUtil.instance.setHeight(60.0))),
+              Center(
+                child: Text(
+                  "WRITINGS",
+                  style: TextStyle(
+                    color: ColorPalette.primaryTextColor,
+                    fontSize: ScreenUtil.instance.setHeight(30.0),
+                  ),
+                ),
               ),
-            ),
-            Text(
-              "Writings",
-              style: TextStyle(
-                color: ColorPalette.primaryTextColor,
-                fontSize: ScreenUtil.instance.setHeight(20.0),
-              ),
-            ),
-          ],
-        ),
-        Padding(
-            padding: EdgeInsets.symmetric(
-                vertical: ScreenUtil.instance.setHeight(60.0))),
-        Center(
-          child: Text(
-            "WRITINGS",
-            style: TextStyle(
-              color: ColorPalette.primaryTextColor,
-              fontSize: ScreenUtil.instance.setHeight(30.0),
-            ),
-          ),
-        ),
-        FloatingActionButton(
-          backgroundColor: Colors.white,
-          child: Icon(
-            Icons.add,
-            color: ColorPalette.primaryTextColor,
-          ),
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => AddPage()));
-            /*showDialog(
+              FloatingActionButton(
+                backgroundColor: Colors.white,
+                child: Icon(
+                  Icons.add,
+                  color: ColorPalette.primaryTextColor,
+                ),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => AddPage()));
+                  /*showDialog(
                 context: context,
                 builder: (_) => new AlertDialog(
                       shape: RoundedRectangleBorder(
@@ -596,10 +605,10 @@ class _ProfilePage extends State<ProfilePage> {
                         },
                       ),
                     ));*/
-          },
-        )
-      ],
-    );
+                },
+              )
+            ],
+          );
   }
 
   Widget _appBarsTopHomePage(BuildContext context) {
@@ -690,7 +699,7 @@ class _ProfilePage extends State<ProfilePage> {
                       await getProfileImage();
                       uploadProfilePicture();
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => ProfilePage()));
+                          MaterialPageRoute(builder: (context) => HomePage()));
                     },
                   ),
                 ),

@@ -101,12 +101,13 @@ class _AddPageState extends State<AddPage> {
             children: <Widget>[
               Text(
                 "Upload",
-                style: TextStyle(fontSize: 22,
-                color: ColorPalette.primaryTextColor),
+                style: TextStyle(
+                    fontSize: 22, color: ColorPalette.primaryTextColor),
               ),
               Text(
                 " Story ",
-                style: TextStyle(fontSize: 22, color: ColorPalette.primaryTextColor),
+                style: TextStyle(
+                    fontSize: 22, color: ColorPalette.primaryTextColor),
               )
             ],
           ),
@@ -118,8 +119,11 @@ class _AddPageState extends State<AddPage> {
                 uploadData();
               },
               child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: ScreenUtil.instance.setWidth(16.0)),
-                  child: Icon(Icons.file_upload), color: ColorPalette.primaryTextColor,),
+                padding: EdgeInsets.symmetric(
+                    horizontal: ScreenUtil.instance.setWidth(16.0)),
+                child: Icon(Icons.file_upload),
+                color: ColorPalette.primaryTextColor,
+              ),
             )
           ],
         ),
@@ -127,90 +131,89 @@ class _AddPageState extends State<AddPage> {
           scrollDirection: Axis.vertical,
           child: _isLoading
               ? Container(
-            child: CircularProgressIndicator(),
-            alignment: Alignment.center,
-          )
+                  child: CircularProgressIndicator(),
+                  alignment: Alignment.center,
+                )
               : Container(
-              child: Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: 10,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      getImage();
-                    },
-                    child: _image != null
-                        ? Container(
+                  child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 10,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        getImage();
+                      },
+                      child: _image != null
+                          ? Container(
+                              margin: EdgeInsets.symmetric(horizontal: 16),
+                              height: ScreenUtil.instance.setHeight(190.0),
+                              // width: MediaQuery.of(context).size.width,
+                              width: ScreenUtil.instance.setHeight(190.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(6),
+                                child: Image.file(
+                                  _image,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            )
+                          : Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal:
+                                      ScreenUtil.instance.setWidth(16.0)),
+                              height: 150,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(6)),
+                              width: MediaQuery.of(context).size.width,
+                              child: Icon(
+                                Icons.add_a_photo,
+                                color: Colors.black45,
+                              ),
+                            ),
+                    ),
+                    SizedBox(
+                      height: ScreenUtil.instance.setHeight(8.0),
+                    ),
+                    Container(
                       margin: EdgeInsets.symmetric(horizontal: 16),
-                      height: ScreenUtil.instance.setHeight(190.0),
-                      // width: MediaQuery.of(context).size.width,
-                      width: ScreenUtil.instance.setHeight(190.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(6),
-                        child: Image.file(
-                          _image,
-                          fit: BoxFit.cover,
-                        ),
+                      child: Column(
+                        children: <Widget>[
+                          TextFormField(
+                            onChanged: (val) {
+                              title = val;
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'Title',
+                              labelStyle: TextStyle(
+                                color: ColorPalette.primaryTextColor,
+                              ),
+                              border: OutlineInputBorder(),
+                            ),
+                          ),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  top: ScreenUtil.instance.setHeight(15.0))),
+                          TextFormField(
+                            onChanged: (val) {
+                              desc = val;
+                            },
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
+                            decoration: InputDecoration(
+                              labelText: 'Story',
+                              labelStyle: TextStyle(
+                                color: ColorPalette.primaryTextColor,
+                              ),
+                              border: OutlineInputBorder(),
+                            ),
+                          ),
+                        ],
                       ),
                     )
-                        : Container(
-                      margin: EdgeInsets.symmetric(horizontal: ScreenUtil.instance.setWidth(16.0)),
-                      height: 150,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(6)),
-                      width: MediaQuery.of(context).size.width,
-                      child: Icon(
-                        Icons.add_a_photo,
-                        color: Colors.black45,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: ScreenUtil.instance.setHeight(8.0),
-                  ),
-
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 16),
-                    child: Column(
-                      children: <Widget>[
-                        TextFormField(
-                          onChanged: (val) {
-                            title = val;
-                          },
-                          decoration: InputDecoration(
-                            labelText: 'Title',
-                            labelStyle: TextStyle(
-                              color: ColorPalette.primaryTextColor,
-                            ),
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-                        Padding(
-                            padding: EdgeInsets.only(
-                                top: ScreenUtil.instance.setHeight(15.0))),
-                        TextFormField(
-                          onChanged: (val) {
-                            desc = val;
-                          },
-                          keyboardType: TextInputType.multiline,
-                          maxLines: null,
-                          decoration: InputDecoration(
-                            labelText: 'Story',
-                            labelStyle: TextStyle(
-                              color: ColorPalette.primaryTextColor,
-                            ),
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              )),
-        )
-
-        );
+                  ],
+                )),
+        ));
   }
 }
