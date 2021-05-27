@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.iswara.iswara">
    <application
-        android:label="iswara"
+        android:label="ISWARA"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
