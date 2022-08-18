@@ -13,12 +13,6 @@ class FavoritePage extends StatefulWidget {
 
 class _FavoritePage extends State<FavoritePage> {
   static const routeName = "/homepage";
-  /*var items = [
-    ReusableComponent(title: "Jakarta, Kota Paling Rentan Bahaya Lingkungan di Dunia", author: "Safir Makki", description: "Jakarta, CNN Indonesia -- DKI Jakarta menduduki peringkat teratas daftar kota paling rentan bahaya lingkungan di dunia. Menurut sebuah penilaian atau indeks iklim risiko yang diterbitkan Jumat (7/5), Jakarta berisiko tenggelam.", image: "./iswara_logo.png", linkToArticle: "./1"),
-    ReusableComponent(title: "Lebaran 2021, Asa dalam Mangkuk Mi dan Terminal Mati", author: "Feybien Ramayanti", description: "Jakarta, CNN Indonesia -- Sepasang mata pria hampir paruh baya di hadapan saya memandang lurus ke ruang lowong di depannya. Hamparan lengang itu lebih mirip lapangan sonder rumput ketimbang terminal.Lobang pada lahan lapang beraspal itu jadi kelihatan karena tak lagi tertutup badan kendaraan. Tak satupun bus terparkir di sana. Apalagi penumpang. Tidak pula orang-orang dengan gembolan kardus-kardus atau tas gendong. Lalu lalang agen perjalanan pun tak ada.", image: "./iswara_logo.png", linkToArticle: "./1"),
-    ReusableComponent(title: "Cara Menandai Lokasi di Google Maps untuk Tambah Alamat", author: "Adhi Wicaksono", description: "Jakarta, CNN Indonesia -- Keberadaan teknologi kian hari berguna untuk memudahkan hidup manusia. Salah satunya dengan fitur Maps pada Google Maps atau peta digital yang diakses menggunakan ponsel smartphone.", image: "./iswara_logo.png", linkToArticle: "./1")
-  ];*/
-
   // Data untuk favorites nanti tampil disini, gak ak ubah apa2 sih disini
 
   CrudMethods crudMethods = new CrudMethods();

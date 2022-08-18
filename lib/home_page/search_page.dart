@@ -8,32 +8,9 @@ import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'dart:core';
 
-// data dummy untuk list, disini aku pakai list
-List<ListWords> listWords =
-    [] /*= [
-  ListWords(
-      'Makanan Lezat',
-      'Michael',
-      'deskripsi adalah pemaparan atau penggambaran dengan kata-kata secara jelas dan terperinci. ',
-      'assets/images/iswara_logo.png',
-      '1'),
-  ListWords(
-      'Minuman',
-      'Lil',
-      'deskripsi adalah pemaparan atau penggambaran dengan kata-kata secara jelas dan terperinci. ',
-      'assets/images/iswara_logo.png',
-      '2'),
-  ListWords(
-      'Hadiah',
-      'Lala',
-      'deskripsi adalah pemaparan atau penggambaran dengan kata-kata secara jelas dan terperinci. ',
-      'assets/images/iswara_logo.png',
-      '3'),
-]*/
-    ;
+List<ListWords> listWords = [];
 
 // urutannya ada title, author, desc, image, sama favorite list
-
 // ada yg ak ubah, dari id list -> favorite list, type bool
 class ListWords {
   String titlelist;
@@ -346,7 +323,6 @@ class DataSearch extends SearchDelegate<String> {
   @override
   Widget buildSuggestions(BuildContext context) {
     // Ini pas seseorang lagi search judul, bukan pas udah neken tombol search
-
     final suggestionList = query.isEmpty
         ? listWords
         : listWords

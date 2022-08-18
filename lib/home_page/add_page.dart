@@ -24,7 +24,6 @@ class _AddPageState extends State<AddPage> {
     final User user = auth.currentUser;
     final uid = user.uid;
     uid_string = uid;
-    // here you write the codes to input the data into firestore
   }
 
   String authorName, title, desc;
@@ -148,7 +147,6 @@ class _AddPageState extends State<AddPage> {
                           ? Container(
                               margin: EdgeInsets.symmetric(horizontal: 16),
                               height: ScreenUtil.instance.setHeight(190.0),
-                              // width: MediaQuery.of(context).size.width,
                               width: ScreenUtil.instance.setHeight(190.0),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(6),
